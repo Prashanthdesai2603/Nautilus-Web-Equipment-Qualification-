@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import NewSessionModal from "./NewSessionModal";
 import SessionListModal from "./SessionListModal";
 import Tabs from "./Tabs";
 import "./tonnage.css";
+import { setHeaderTitle } from "../../actions/header";
+import { connect } from "react-redux";
 
-const TonnageOptimization = () => {
+const TonnageOptimization = ({ setHeaderTitle }) => {
+
+  useEffect(() => {
+      setHeaderTitle("Tonnage Optimization");
+    }, [setHeaderTitle]);
+
   const [showNewModal, setShowNewModal] = useState(false);
   const [showSessionList, setShowSessionList] = useState(false);
   const [session, setSession] = useState(null);
@@ -108,4 +115,5 @@ const TonnageOptimization = () => {
   );
 };
 
-export default TonnageOptimization;
+export default connect(null, { setHeaderTitle })(TonnageOptimization);
+

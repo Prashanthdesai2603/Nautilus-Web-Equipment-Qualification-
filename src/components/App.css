@@ -1433,7 +1433,7 @@ Button#GridEdit_undefine.e-lib.e-btn.e-control.e-flat.custom_edit.e-edit.e-editb
 
 /* Adjust page body margin to match narrower sidebar */
 .page-wrapper .page-body-wrapper.sidebar-icon .page-sidebar ~ .page-body {
-  margin-left: 20px !important;
+  margin-left: 0px !important;
 }
 
 /* Adjust header margin for narrower sidebar */

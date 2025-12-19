@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 // Tab view component from syncfusion to navigate through six steps study
 import {
   TabComponent,
