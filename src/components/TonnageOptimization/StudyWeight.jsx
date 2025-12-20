@@ -21,11 +21,15 @@ const EMPTY_ROW = {
   perc: ""
 };
 
+const FIELDS = ["tonnage", "s1", "s2", "s3"];
+
 /* ---------- COMPONENT ---------- */
 
 const StudyWeight = ({ sessionId }) => {
-  const storageKey = sessionId ? `studyWeightData_${sessionId}` : "studyWeightData";
-  
+  const storageKey = sessionId
+    ? `studyWeightData_${sessionId}`
+    : "studyWeightData";
+
   const [rows, setRows] = useState(() => {
     const saved = localStorage.getItem(storageKey);
     return saved
@@ -36,29 +40,66 @@ const StudyWeight = ({ sessionId }) => {
   const [showChart, setShowChart] = useState(false);
   const chartRef = useRef(null);
 
+  /* ---------- CHANGE HANDLER ---------- */
+
+  const handleChange = (rowIndex, field, value) => {
+    const updated = [...rows];
+    updated[rowIndex][field] = value;
+
+    recalcRow(updated, rowIndex);
+    setRows(updated);
+  };
+
+  /* ---------- MULTI-CELL PASTE HANDLER ---------- */
+
+  const handlePaste = (e, startRow, startCol) => {
+    e.preventDefault();
+
+    const clipboard = e.clipboardData.getData("text");
+    const lines = clipboard.trim().split("\n");
+
+    const updated = [...rows];
+
+    lines.forEach((line, rowOffset) => {
+      const values = line.split("\t");
+      const rowIndex = startRow + rowOffset;
+
+      if (!updated[rowIndex]) return;
+
+      values.forEach((val, colOffset) => {
+        const field = FIELDS[startCol + colOffset];
+        if (field) {
+          updated[rowIndex][field] = val.trim();
+        }
+      });
+
+      recalcRow(updated, rowIndex);
+    });
+
+    setRows(updated);
+  };
+
   /* ---------- CALCULATION ---------- */
 
-  const handleChange = (index, field, value) => {
-    const updated = [...rows];
-    updated[index][field] = value;
-
-    const s1 = parseFloat(updated[index].s1) || 0;
-    const s2 = parseFloat(updated[index].s2) || 0;
-    const s3 = parseFloat(updated[index].s3) || 0;
+  const recalcRow = (data, index) => {
+    const s1 = parseFloat(data[index].s1) || 0;
+    const s2 = parseFloat(data[index].s2) || 0;
+    const s3 = parseFloat(data[index].s3) || 0;
 
     if (s1 || s2 || s3) {
       const avg = ((s1 + s2 + s3) / 3).toFixed(2);
-      updated[index].avg = avg;
+      data[index].avg = avg;
 
-      if (index > 0 && updated[index - 1].avg) {
-        const prev = parseFloat(updated[index - 1].avg);
+      if (index > 0 && data[index - 1].avg) {
+        const prev = parseFloat(data[index - 1].avg);
         const inc = avg - prev;
-        updated[index].inc = inc.toFixed(2);
-        updated[index].perc = ((inc / prev) * 100).toFixed(2);
+        data[index].inc = inc.toFixed(2);
+        data[index].perc = ((inc / prev) * 100).toFixed(2);
+      } else {
+        data[index].inc = "";
+        data[index].perc = "";
       }
     }
-
-    setRows(updated);
   };
 
   /* ---------- CHART DATA ---------- */
@@ -75,22 +116,16 @@ const StudyWeight = ({ sessionId }) => {
 
   /* ---------- BUTTON ACTIONS ---------- */
 
-  const handleCalculate = () => {
-    setShowChart(true);
-  };
+  const handleCalculate = () => setShowChart(true);
 
   const handleSave = () => {
     localStorage.setItem(storageKey, JSON.stringify(rows));
     alert("Study Weight data saved successfully");
   };
 
-  const handleClose = () => {
-    setShowChart(false);
-  };
+  const handleClose = () => setShowChart(false);
 
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = () => window.print();
 
   /* ---------- UI ---------- */
 
@@ -112,14 +147,17 @@ const StudyWeight = ({ sessionId }) => {
           </thead>
 
           <tbody>
-            {rows.map((row, i) => (
-              <tr key={i}>
-                {["tonnage", "s1", "s2", "s3"].map(field => (
+            {rows.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {FIELDS.map((field, colIndex) => (
                   <td key={field}>
                     <input
                       value={row[field]}
                       onChange={e =>
-                        handleChange(i, field, e.target.value)
+                        handleChange(rowIndex, field, e.target.value)
+                      }
+                      onPaste={e =>
+                        handlePaste(e, rowIndex, colIndex)
                       }
                     />
                   </td>
@@ -144,15 +182,8 @@ const StudyWeight = ({ sessionId }) => {
           {showChart && chartData.length > 0 && (
             <ChartComponent
               ref={chartRef}
-              primaryXAxis={{
-                title: "Tonnage",
-                valueType: "Category",
-                majorGridLines: { width: 1 }
-              }}
-              primaryYAxis={{
-                title: "Average Weight",
-                majorGridLines: { width: 1 }
-              }}
+              primaryXAxis={{ title: "Tonnage", valueType: "Category" }}
+              primaryYAxis={{ title: "Average Weight" }}
               tooltip={{ enable: true }}
               height="100%"
             >
@@ -163,9 +194,8 @@ const StudyWeight = ({ sessionId }) => {
                   xName="tonnage"
                   yName="avgWeight"
                   type="Line"
+                  marker={{ visible: true }}
                   width={2}
-                  marker={{ visible: true, width: 8, height: 8 }}
-                  fill="#1f4bd8"
                 />
               </SeriesCollectionDirective>
             </ChartComponent>
