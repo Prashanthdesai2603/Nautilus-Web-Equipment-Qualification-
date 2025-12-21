@@ -179,3 +179,44 @@
     border: 1px solid #00008b;
     background-color: #e4eae1;
 }
+
+/* Container - Tonnage Optimization Grids */
+#Tonnage_Grid .table-container,
+#Dim1_Grid .table-container,
+#Dim2_Grid .table-container,
+#StudyWeight_Grid .table-container {
+    overflow: hidden;
+    max-height: 100vh;
+    height: 35vh;
+    /* border: 1px solid darkblue; */
+    background-color: #e4eae1;
+    /* Fixed typo */
+}
+
+/* Scrollable wrapper - Tonnage Optimization Grids */
+#Tonnage_Grid .table-scroll-wrapper,
+#Dim1_Grid .table-scroll-wrapper,
+#Dim2_Grid .table-scroll-wrapper,
+#StudyWeight_Grid .table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    /* Enables horizontal scrolling */
+    overflow-y: auto;
+    /* Enables vertical scrolling */
+    max-height: 100vh;
+    height: 35vh;
+    /* Fixed typo */
+    /* Fixed height for vertical scrolling */
+    /* border: 1px solid #00008b; */
+    background-color: #e4eae1;
+}
+
+/* Table - Tonnage Optimization Grids */
+#Tonnage_Grid .excel-table,
+#Dim1_Grid .excel-table,
+#Dim2_Grid .excel-table,
+#StudyWeight_Grid .excel-table {
+    width: max-content;
+    border-collapse: collapse;
+    /* Make it look like Excel */
+}

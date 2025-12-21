@@ -266,6 +266,15 @@ div.e-tab-header.e-control.e-toolbar.e-lib.e-keyboard #defaultTab_tab_header_ite
 .tab-view {
   margin-top: 7px;
 }
+.tab-content {
+  height: 100%;
+}
+
+
+.tab-pane.active {
+  height: 100%;
+}
+
 
 .scrollbar {
   height: 260px;

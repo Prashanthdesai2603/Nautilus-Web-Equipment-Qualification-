@@ -9,6 +9,8 @@ import {
   Tooltip
 } from "@syncfusion/ej2-react-charts";
 
+/* ---------- CONSTANTS ---------- */
+
 const EMPTY_ROW = {
   tonnage: "",
   s1: "",
@@ -19,9 +21,13 @@ const EMPTY_ROW = {
   perc: ""
 };
 
+const FIELDS = ["tonnage", "s1", "s2", "s3"];
+
+/* ---------- COMPONENT ---------- */
+
 const Dim2 = ({ sessionId }) => {
   const storageKey = sessionId ? `dim2Data_${sessionId}` : "dim2Data";
-  
+
   const [rows, setRows] = useState(() => {
     const saved = localStorage.getItem(storageKey);
     return saved
@@ -36,27 +42,58 @@ const Dim2 = ({ sessionId }) => {
     localStorage.setItem(storageKey, JSON.stringify(rows));
   }, [rows, storageKey]);
 
-  const handleChange = (index, field, value) => {
+  const handleChange = (rowIndex, field, value) => {
     const updated = [...rows];
-    updated[index][field] = value;
+    updated[rowIndex][field] = value;
+    recalcRow(updated, rowIndex);
+    setRows(updated);
+  };
 
-    const s1 = parseFloat(updated[index].s1) || 0;
-    const s2 = parseFloat(updated[index].s2) || 0;
-    const s3 = parseFloat(updated[index].s3) || 0;
+  const handlePaste = (e, startRow, startCol) => {
+    e.preventDefault();
+
+    const clipboard = e.clipboardData.getData("text");
+    const lines = clipboard.trim().split("\n");
+    const updated = [...rows];
+
+    lines.forEach((line, rowOffset) => {
+      const values = line.split("\t");
+      const rowIndex = startRow + rowOffset;
+
+      if (!updated[rowIndex]) return;
+
+      values.forEach((val, colOffset) => {
+        const field = FIELDS[startCol + colOffset];
+        if (field) {
+          updated[rowIndex][field] = val.trim();
+        }
+      });
+
+      recalcRow(updated, rowIndex);
+    });
+
+    setRows(updated);
+  };
+
+  const recalcRow = (data, index) => {
+    const s1 = parseFloat(data[index].s1) || 0;
+    const s2 = parseFloat(data[index].s2) || 0;
+    const s3 = parseFloat(data[index].s3) || 0;
 
     if (s1 || s2 || s3) {
       const avg = ((s1 + s2 + s3) / 3).toFixed(2);
-      updated[index].avg = avg;
+      data[index].avg = avg;
 
-      if (index > 0 && updated[index - 1].avg) {
-        const prev = parseFloat(updated[index - 1].avg);
+      if (index > 0 && data[index - 1].avg) {
+        const prev = parseFloat(data[index - 1].avg);
         const inc = avg - prev;
-        updated[index].inc = inc.toFixed(2);
-        updated[index].perc = ((inc / prev) * 100).toFixed(2);
+        data[index].inc = inc.toFixed(2);
+        data[index].perc = ((inc / prev) * 100).toFixed(2);
+      } else {
+        data[index].inc = "";
+        data[index].perc = "";
       }
     }
-
-    setRows(updated);
   };
 
   const chartData = useMemo(() => {
@@ -85,14 +122,17 @@ const Dim2 = ({ sessionId }) => {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, i) => (
-              <tr key={i}>
-                {["tonnage", "s1", "s2", "s3"].map(field => (
+            {rows.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {FIELDS.map((field, colIndex) => (
                   <td key={field}>
                     <input
                       value={row[field]}
                       onChange={e =>
-                        handleChange(i, field, e.target.value)
+                        handleChange(rowIndex, field, e.target.value)
+                      }
+                      onPaste={e =>
+                        handlePaste(e, rowIndex, colIndex)
                       }
                     />
                   </td>
@@ -116,13 +156,8 @@ const Dim2 = ({ sessionId }) => {
           {showChart && chartData.length > 0 && (
             <ChartComponent
               ref={chartRef}
-              primaryXAxis={{
-                title: "Tonnage",
-                valueType: "Category"
-              }}
-              primaryYAxis={{
-                title: "Avg Dim2"
-              }}
+              primaryXAxis={{ title: "Tonnage", valueType: "Category" }}
+              primaryYAxis={{ title: "Avg Dim2" }}
               tooltip={{ enable: true }}
               height="100%"
             >
