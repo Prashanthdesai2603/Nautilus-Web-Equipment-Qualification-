@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../Grid.css"; // Import CSS
 
 const InjSpeedGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
