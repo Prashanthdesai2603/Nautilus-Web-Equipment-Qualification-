@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import InjGrid from "./InjGrid";
+import { useState, useEffect } from "react";
 // Syncfusion chart control
 import {
   ChartComponent,
@@ -13,7 +12,6 @@ import {
   Legend,
   Tooltip,
 } from "@syncfusion/ej2-react-charts";
-import AddRow from "./AddRow";
 import {
   HtmlEditor,
   RichTextEditorComponent,
@@ -697,12 +695,6 @@ const InjSpeed = ({
                 >
                   Delete Row
                 </button>
-                <AddRow
-                  ToggleAddRowModal={ToggleAddRowModal}
-                  InjSpeedAddRowModal={InjSpeedAddRowModal}
-                  addRow={addRow}
-                  increaseRow={increaseRow}
-                />
                 <button
                   className="btn btn-primary btn-air-primary mr-2"
                   type="button"

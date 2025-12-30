@@ -7,13 +7,20 @@ import Loader from './common/loader';
 import 'react-toastify/dist/ReactToastify.css';
 import TonnageOptimization from "./TonnageOptimization/TonnageOptimization";
 
-
-
-const App = () => {
+const App = ({ ...props }) => {
   return (
-    <div className="app-container">
-      <TonnageOptimization />
-    </div>
+    <Fragment>
+      <Loader />
+      <div className="page-wrapper">
+        <div className="page-body-wrapper">
+          <Header />
+          <Sidebar />
+          <div className="page-body">
+            {props.children}
+          </div>
+        </div>
+      </div>
+    </Fragment>
   );
 };
 

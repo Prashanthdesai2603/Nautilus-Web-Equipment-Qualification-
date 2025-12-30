@@ -13576,12 +13576,12 @@ body.dark-sidebar-body-mix .page-wrapper .page-body-wrapper .page-sidebar .sideb
     height: 50px;
     position: fixed;
     top: 0;
-    z-index: 15;
+    z-index: 1001;
     box-shadow: 0 0 10px 1px rgba(68, 102, 242, 0.05);
     width: 100%;
     display: flex;
     align-items: center;
-    /* margin-left: 50px; */
+    margin-left: 40px;
     transition: 0.3s;
 }
 
@@ -13598,6 +13598,7 @@ body.dark-sidebar-body-mix .page-wrapper .page-body-wrapper .page-sidebar .sideb
     position: relative;
     /* background-color: rgba(246, 246, 246, 0.6); } */
     background-color: #cad2c5;
+    margin-left: 30px;
 }
 
 ;
@@ -14392,7 +14393,7 @@ ul .submenu input {
 }
 
 .page-wrapper .page-body-wrapper .page-sidebar {
-    /* width: 205px; */
+    width: 50px;
     position: fixed;
     /* background: #21325E; */
     background: #3f5e55;

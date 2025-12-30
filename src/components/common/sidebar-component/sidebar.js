@@ -51,7 +51,7 @@ const Sidebar = (props) => {
                     {/* <menuItem.icon /> */}
                     <img
                       src={menuItem.icon}
-                      alt={`${menuItem.title} Icon`}
+                      alt={`${menuItem.title}`}
                       className="menu-icon"
                       style={{ width: "25px", height: "25px" }}
                     />
@@ -73,7 +73,7 @@ const Sidebar = (props) => {
                     {/* <menuItem.icon /> */}
                     <img
                       src={menuItem.icon}
-                      alt={`${menuItem.title} Icon`}
+                      alt={`${menuItem.title}`}
                       className="menu-icon"
                       style={{ width: "30px", height: "30px" }}
                     />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import NewSessionModal from "./NewSessionModal";
 import SessionListModal from "./SessionListModal";
 
@@ -6,7 +6,16 @@ import TonnageReport from "./Report/TonnageReport";
 import Tabs from "./Tabs";
 
 import "./tonnage.css";
+import { setHeaderTitle } from "../../actions/header";
+import { connect } from "react-redux";
 
+const TonnageOptimization = ({ setHeaderTitle }) => {
+
+  useEffect(() => {
+      setHeaderTitle("Tonnage Optimization");
+    }, [setHeaderTitle]);
+
+ tonnage-optimization
 const TonnageOptimization = () => {
 
   // Report view toggle
@@ -21,6 +30,7 @@ const TonnageOptimization = () => {
   // Report section selection
 
 
+main
   const [showNewModal, setShowNewModal] = useState(false);
   const [showSessionList, setShowSessionList] = useState(false);
   const [session, setSession] = useState(null);
@@ -148,8 +158,11 @@ const TonnageOptimization = () => {
   );
 };
 
+tonnage-optimization
 
 
 
 
 export default TonnageOptimization;
+export default connect(null, { setHeaderTitle })(TonnageOptimization);
+ main

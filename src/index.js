@@ -11,6 +11,7 @@ import EquipmentDashboard from "./components/EquipmentQualification/EquipmentDas
 
 // Import Stimulsoft for license registration
 import { Stimulsoft } from "stimulsoft-reports-js/Scripts/stimulsoft.reports";
+import TonnageOptimization from "./components/TonnageOptimization/TonnageOptimization";
 
 // Registering Syncfusion license key
 registerLicense(
@@ -45,6 +46,10 @@ const Root = () => {
               <Route
                 path="/dashboard"
                 component={EquipmentDashboard}
+              />
+              <Route
+                path="/Tonnage"
+                component={TonnageOptimization}
               />
             </App>
           </Switch>
