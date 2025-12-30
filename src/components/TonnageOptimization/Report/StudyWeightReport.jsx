@@ -41,7 +41,7 @@ export async function generateStudyWeightSection({
     page.margins = new Stimulsoft.Report.Components.StiMargins(0.3, 0.3, 0.3, 0.3);
     report.pages.add(page);
 
-    addPageHeader(page, "Weight"); // Fixed ESLint: removed unused const assignment
+    addPageHeader(page, "Weight");
     addPageFooter(page);
 
     // --- CHART OVERLAY (Fixed on First Page) ---
@@ -119,7 +119,6 @@ export async function generateStudyWeightSection({
     colKeys.forEach((key, i) => {
         const rowText = new Stimulsoft.Report.Components.StiText();
         rowText.clientRectangle = new Stimulsoft.Base.Drawing.RectangleD(xOffset, 0, colWidths[i], 0.35);
-        // Correct expression syntax for JSON-based data sources
         rowText.text = "{StudyWeightTable." + key + "}";
         rowText.horAlignment = Stimulsoft.Base.Drawing.StiTextHorAlignment.Center;
         rowText.vertAlignment = Stimulsoft.Base.Drawing.StiVertAlignment.Center;
