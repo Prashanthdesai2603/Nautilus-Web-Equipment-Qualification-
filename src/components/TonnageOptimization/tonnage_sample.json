@@ -1,0 +1,40 @@
+{
+    "Session": {
+        "SessionName": "chart1",
+        "SessionDate": "25-12-2025"
+    },
+    "StudyWeightList": [
+        {
+            "Tonnage": 10,
+            "Sample1": 12,
+            "Sample2": 11,
+            "Sample3": 13,
+            "AverageWeight": 12,
+            "ActualIncrease": 2,
+            "PercentageIncrease": 20
+        }
+    ],
+    "Dim1List": [
+        {
+            "Tonnage": 10,
+            "Sample1": 5,
+            "Sample2": 6,
+            "Sample3": 5.5,
+            "AvgDim1": 5.5,
+            "ActualIncrease": 0.5,
+            "PercentageIncrease": 10
+        }
+    ],
+    "Dim2List": [
+        {
+            "Tonnage": 10,
+            "Sample1": 7,
+            "Sample2": 7.5,
+            "Sample3": 8,
+            "AvgDim2": 7.5,
+            "ActualIncrease": 0.7,
+            "PercentageIncrease": 9.3
+        }
+    ],
+    "Notes": "This tonnage optimization session was performed successfully."
+}

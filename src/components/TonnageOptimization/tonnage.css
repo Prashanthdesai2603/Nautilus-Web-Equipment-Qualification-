@@ -282,14 +282,91 @@
   overflow: hidden;
 }
 
-/* ================= EQ STYLE : NEW SESSION MODAL ================= */
+/* ================= EQ STYLE NEW SESSION MODAL ================= */
 
 .eq-modal {
-  width: 500px;
-  padding: 0;
+  width: 380px;
+  background: #eef5fb;
   border-radius: 6px;
-  overflow: hidden;
+  padding: 20px 22px 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
+
+.eq-modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2f5f5a;
+}
+
+.eq-modal-subtitle {
+  margin-top: 6px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Form layout */
+.eq-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.eq-form-group label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #333;
+  font-weight: 500;
+}
+
+.eq-form-group input {
+  height: 36px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #9fb3c1;
+  border-radius: 3px;
+}
+
+.eq-form-group input:focus {
+  outline: none;
+  border-color: #1e5d8c;
+  background: #ffffff;
+}
+
+/* Actions */
+.eq-modal-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.eq-btn {
+  min-width: 90px;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 3px;
+  border: 1px solid #9aa7b0;
+  background: #f1f1f1;
+  cursor: pointer;
+}
+
+.eq-btn:hover {
+  background: #e1e1e1;
+}
+
+.eq-btn.primary {
+  background: #1e5d8c;
+  color: white;
+  border-color: #174c72;
+}
+
+.eq-btn.primary:hover {
+  background: #174c72;
+}
+
 .e-cell.selected {
   background-color: #cfe5ff;
 }
