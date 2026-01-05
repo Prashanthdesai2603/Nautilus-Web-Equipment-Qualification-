@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import NewSessionModal from "./NewSessionModal";
 import SessionListModal from "./SessionListModal";
+
+import TonnageReport from "./Report/TonnageReport";
 import Tabs from "./Tabs";
+
 import "./tonnage.css";
 import { setHeaderTitle } from "../../actions/header";
 import { connect } from "react-redux";
@@ -12,9 +15,26 @@ const TonnageOptimization = ({ setHeaderTitle }) => {
       setHeaderTitle("Tonnage Optimization");
     }, [setHeaderTitle]);
 
+ tonnage-optimization
+const TonnageOptimization = () => {
+
+  // Report view toggle
+  // Report view toggle
+  const [ShowPrintPart, setShowPrintPart] = useState(false);
+
+
+
+  // Session & Mold details (aligns with EQ pattern)
+
+
+  // Report section selection
+
+
+main
   const [showNewModal, setShowNewModal] = useState(false);
   const [showSessionList, setShowSessionList] = useState(false);
   const [session, setSession] = useState(null);
+
 
   // Load session from localStorage on mount if exists
   useEffect(() => {
@@ -64,7 +84,9 @@ const TonnageOptimization = ({ setHeaderTitle }) => {
   const handleCloseSession = () => {
     localStorage.removeItem("currentTonnageSessionId");
     setSession(null);
+
   };
+
 
   return (
     <div className="tonnage-root">
@@ -77,6 +99,11 @@ const TonnageOptimization = ({ setHeaderTitle }) => {
             <span style={{ fontSize: "14px", color: "#333" }}>
               Session: {session.name}
             </span>
+
+            <button className="btn" onClick={() => setShowPrintPart(true)}>
+              Report
+            </button>
+
             <button className="btn" onClick={handleCloseSession}>
               Close Session
             </button>
@@ -110,10 +137,32 @@ const TonnageOptimization = ({ setHeaderTitle }) => {
       )}
 
       {/* WORKSPACE */}
-      {session && <Tabs session={session} />}
+      {session && !ShowPrintPart && <Tabs session={session} />}
+
+      {/* REPORT VIEW */}
+      {ShowPrintPart && (
+        <TonnageReport
+          session={session}
+          SessionName={session ? session.name : "Default Session"}
+          MoldName={"Sample Mold"}
+          selectedPrintSections={{
+            StudyWeight: true,
+            Dim1: true,
+            Dim2: true,
+            Notes: true
+          }}
+          onClose={() => setShowPrintPart(false)}
+        />
+      )}
     </div>
   );
 };
 
-export default connect(null, { setHeaderTitle })(TonnageOptimization);
+tonnage-optimization
 
+
+
+
+export default TonnageOptimization;
+export default connect(null, { setHeaderTitle })(TonnageOptimization);
+ main

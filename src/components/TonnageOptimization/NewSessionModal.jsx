@@ -16,25 +16,25 @@ const NewSessionModal = ({ onCreate, onCancel }) => {
       name,
       date,
     });
-  };
-
-  return (
+  };return (
     <div className="modal-backdrop">
-      <div className="modal-box">
-        <h3>Tonnage Optimization</h3>
-        <p><strong>New Session</strong></p>
+      <div className="eq-modal">
 
-        <div className="field">
-          <label>Name :</label>
+        <h2 className="eq-modal-title">Tonnage Optimization</h2>
+        <div className="eq-modal-subtitle">New Session</div>
+
+        <div className="eq-form-group">
+          <label>Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="Enter session name"
           />
         </div>
 
-        <div className="field">
-          <label>Date :</label>
+        <div className="eq-form-group">
+          <label>Date</label>
           <input
             type="date"
             value={date}
@@ -42,14 +42,18 @@ const NewSessionModal = ({ onCreate, onCancel }) => {
           />
         </div>
 
-        <div className="actions">
-          <button className="btn" onClick={handleCreate}>
+        <div className="eq-modal-actions">
+          <button
+            className="eq-btn primary"
+            onClick={() => onCreate({ name, date })}
+          >
             Create
           </button>
-          <button className="btn cancel" onClick={onCancel}>
+          <button className="eq-btn" onClick={onCancel}>
             Cancel
           </button>
         </div>
+
       </div>
     </div>
   );

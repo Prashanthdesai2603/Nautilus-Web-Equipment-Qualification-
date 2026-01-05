@@ -1,0 +1,32 @@
+.report-container {
+    background: #fff;
+    padding: 20px;
+}
+
+.report-header .meta {
+    display: flex;
+    gap: 25px;
+    font-size: 14px;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.report-table th,
+.report-table td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    text-align: center;
+}
+
+section {
+    margin-bottom: 25px;
+}
+
+.report-footer {
+    text-align: center;
+    font-size: 12px;
+}
