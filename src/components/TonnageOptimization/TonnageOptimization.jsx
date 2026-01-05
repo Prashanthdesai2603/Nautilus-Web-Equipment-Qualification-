@@ -25,8 +25,6 @@ const TonnageOptimization = ({ setHeaderTitle }) => {
 
   // Report section selection
 
-
-  main
   const [showNewModal, setShowNewModal] = useState(false);
   const [showSessionList, setShowSessionList] = useState(false);
   const [session, setSession] = useState(null);
@@ -185,4 +183,7 @@ const TonnageOptimization = ({ setHeaderTitle }) => {
     </div>
   );
 };
+
 export default connect(null, { setHeaderTitle })(TonnageOptimization);
+
+
