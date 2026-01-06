@@ -51,9 +51,9 @@ const TonnageReport = ({
         const originalPadding = document.body.style.padding;
         const originalOverflow = document.body.style.overflow;
 
-        document.body.style.margin = '0';
-        document.body.style.padding = '0';
-        document.body.style.overflow = 'hidden';
+        // document.body.style.margin = '0';
+        // document.body.style.padding = '0';
+        // document.body.style.overflow = 'hidden';
 
         let isCancelled = false;
 
@@ -265,6 +265,9 @@ const TonnageReport = ({
                     const options = new Stimulsoft.Viewer.StiViewerOptions();
                     options.toolbar.showDesignButton = false;
                     options.appearance.viewMode = 'Continuous';
+                    options.appearance.scrollbarsMode = 'Auto';
+                    options.width = '100%';
+                    options.height = '100%';
                     const viewer = new Stimulsoft.Viewer.StiViewer(options, 'StiViewer', false);
                     report.reportName = "Tonnage_Optimization_Report";
                     viewer.report = report;
@@ -280,16 +283,16 @@ const TonnageReport = ({
 
         return () => {
             isCancelled = true;
-            document.body.style.margin = originalMargin;
-            document.body.style.padding = originalPadding;
-            document.body.style.overflow = originalOverflow;
+            // document.body.style.margin = originalMargin;
+            // document.body.style.padding = originalPadding;
+            // document.body.style.overflow = originalOverflow;
         };
     }, [studyWeightData, dim1Data, dim2Data, notesData, SessionName, MoldName, selectedPrintSections, session]);
 
     if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
 
     return (
-        <div className="report-root" style={{ width: '100%', height: 'calc(100vh - 100px)', display: 'flex', flexDirection: 'column' }}>
+        <div className="report-root" style={{ width: '100%', height: 'calc(100vh - 150px)', display: 'flex', flexDirection: 'column', background: '#fff' }}>
             <div className="report-toolbar" style={{ padding: '8px', background: '#f8f9fa', borderBottom: '1px solid #ddd' }}>
                 <button onClick={onClose} className="btn btn-secondary" style={{ padding: '4px 12px' }}>Close Report</button>
             </div>
