@@ -15,7 +15,7 @@ import Dim2Grid from "./Dim2Grid";
 
 /* ---------- COMPONENT ---------- */
 
-const Dim2 = ({ sessionId }) => {
+const Dim2 = ({ sessionId, onClose }) => {
   const storageKey = sessionId ? `dim2Data_${sessionId}` : "dim2Data";
 
   // Convert data format: 2D array [tonnage, s1, s2, s3, avg, inc, perc]
@@ -45,8 +45,6 @@ const Dim2 = ({ sessionId }) => {
     return Array.from({ length: 10 }, () => Array(7).fill(""));
   });
 
-  const [rowToBeDeleted, setRowToBeDeleted] = useState();
-  const [ToPlotChart, setToPlotChart] = useState(true);
   const [showChart, setShowChart] = useState(false);
 
   useEffect(() => {
@@ -89,15 +87,15 @@ const Dim2 = ({ sessionId }) => {
     }
 
     const tdElements = document.querySelectorAll("#Dim2_Sheet .e-cell");
-    
+
     // Create a temporary array to hold the grid data
     const gridData = [];
     let currentRow = [];
-    
+
     tdElements.forEach((td, index) => {
       const colIndex = index % 7;
       const cellValue = td.textContent.trim();
-      
+
       if (colIndex === 0) {
         // Start a new row
         if (currentRow.length > 0) {
@@ -108,7 +106,7 @@ const Dim2 = ({ sessionId }) => {
         currentRow.push(cellValue || "");
       }
     });
-    
+
     // Push the last row
     if (currentRow.length > 0) {
       gridData.push(currentRow);
@@ -156,32 +154,23 @@ const Dim2 = ({ sessionId }) => {
     alert("Dim2 data saved successfully");
   };
 
-  const handleClose = () => {
-    setShowChart(false);
-  };
-
-  const handlePrint = () => {
-    window.print();
-  };
-
-  /* ---------- UI (Matching Image Layout) ---------- */
+  /* ---------- UI (Matching EQ Layout) ---------- */
 
   return (
     <div className="card equipmentDash p-3 ml-2" style={{ backgroundColor: "#e4eae1" }}>
       <div className="b-primary b-r-4 mb-2">
         <section className="m-1">
-          <div className="d-flex">
+          <div className="d-flex mb-3">
             {/* LEFT SIDE: Grid Table */}
             <div
               className="mt-2 mb-2 ml-2 mr-2"
               style={{ width: "50%" }}
             >
-              <div onClick={() => setToPlotChart(false)}>
-                <Dim2Grid 
-                  data={data} 
-                  setData={setData} 
+              <div>
+                <Dim2Grid
+                  data={data}
+                  setData={setData}
                   getData={getData}
-                  setRowToBeDeleted={setRowToBeDeleted}
                 />
               </div>
             </div>
@@ -191,41 +180,11 @@ const Dim2 = ({ sessionId }) => {
               className="mt-2 mb-2 mr-2"
               style={{ width: "50%" }}
             >
-              {/* Chart Title and Print Button */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "8px 12px",
-                  backgroundColor: "#5F6660",
-                  color: "#ffffff",
-                  marginBottom: "8px",
-                }}
-              >
-                <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                  Tonnage Dim2 Chart
-                </span>
-                <button
-                  className="btn btn-sm"
-                  style={{
-                    backgroundColor: "#1E5D8C",
-                    border: "1px solid #164A70",
-                    color: "#ffffff",
-                    padding: "4px 10px",
-                    fontSize: "12px",
-                  }}
-                  onClick={handlePrint}
-                >
-                  Print
-                </button>
-              </div>
-
               {/* Chart Container */}
               <div
                 style={{
                   border: "1px solid #ccc",
-                  backgroundColor: "#ffffff",
+                  backgroundColor: "#ffff",
                   padding: "8px",
                   minHeight: "400px",
                 }}
@@ -233,10 +192,11 @@ const Dim2 = ({ sessionId }) => {
                 {showChart && chartData.length > 0 ? (
                   <ChartComponent
                     className="equipmentChart"
-                    width="50%"
+                    width="100%"
                     height="400"
                     border={{ width: 1, color: "darkblue" }}
                     tooltip={{ enable: true }}
+                    title="Tonnage Dim2 Chart"
                     primaryXAxis={{
                       title: "Tonnage",
                       lineStyle: { color: "black" },
@@ -287,50 +247,45 @@ const Dim2 = ({ sessionId }) => {
                 )}
               </div>
 
-              {/* Buttons Below Chart */}
-            {/* ACTION BUTTONS – BELOW CHART (LEFT ALIGNED) */}
-<div
-  style={{
-    display: "flex",
-    justifyContent: "flex-start",
-    gap: "10px",
-    marginTop: "10px",
-    padding: "10px",
-    borderTop: "1px solid #ccc",
-    backgroundColor: "#f5f5f5",
-  }}
->
-  <button
-    className="btn btn-primary btn-air-primary"
-    onClick={handleCalculate}
-  >
-    Calculate & Show Graph
-  </button>
+              {/* ACTION BUTTONS - FOOTER (NESTED) */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  gap: "10px",
+                  padding: "10px",
+                  borderTop: "1px solid #ccc",
+                  backgroundColor: "#f5f5f5",
+                  marginTop: "10px"
+                }}
+              >
+                <button
+                  className="btn btn-primary btn-air-primary"
+                  onClick={handleCalculate}
+                >
+                  Calculate & Show Graph
+                </button>
 
-  <button
-    className="btn btn-secondary btn-air-secondary"
-    onClick={handleSave}
-  >
-    Save
-  </button>
+                <button
+                  className="btn btn-secondary btn-air-secondary"
+                  onClick={handleSave}
+                >
+                  Save
+                </button>
 
-  <button
-    className="btn btn-secondary btn-air-secondary"
-    onClick={handlePrint}
-  >
-    Print
-  </button>
-
-  <button
-    className="btn btn-secondary btn-air-secondary"
-    onClick={handleClose}
-  >
-    Close
-  </button>
-</div>
-
+                <button
+                  className="btn btn-secondary btn-air-secondary"
+                  onClick={() => {
+                    if (onClose) onClose();
+                  }}
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
+
+
         </section>
       </div>
     </div>
@@ -338,4 +293,5 @@ const Dim2 = ({ sessionId }) => {
 };
 
 export default Dim2;
+
 

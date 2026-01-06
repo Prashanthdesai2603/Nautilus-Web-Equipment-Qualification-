@@ -12,13 +12,9 @@ import { connect } from "react-redux";
 const TonnageOptimization = ({ setHeaderTitle }) => {
 
   useEffect(() => {
-      setHeaderTitle("Tonnage Optimization");
-    }, [setHeaderTitle]);
+    setHeaderTitle("Tonnage Optimization");
+  }, [setHeaderTitle]);
 
- tonnage-optimization
-const TonnageOptimization = () => {
-
-  // Report view toggle
   // Report view toggle
   const [ShowPrintPart, setShowPrintPart] = useState(false);
 
@@ -29,8 +25,6 @@ const TonnageOptimization = () => {
 
   // Report section selection
 
-
-main
   const [showNewModal, setShowNewModal] = useState(false);
   const [showSessionList, setShowSessionList] = useState(false);
   const [session, setSession] = useState(null);
@@ -88,34 +82,27 @@ main
   };
 
 
+
   return (
-    <div className="tonnage-root">
-      {/* HEADER */}
-      <div className="tonnage-header">
-        <h2>Tonnage Optimization</h2>
-
-        {session ? (
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <span style={{ fontSize: "14px", color: "#333" }}>
-              Session: {session.name}
+    <div className="tonnage-root container-fluid">
+      {/* HEADER - Matching EQ style */}
+      <div className="d-flex justify-content-between ml-3 pt-3 pb-3">
+        <div className="d-flex">
+          <div>
+            <span style={{ fontSize: "14px", fontWeight: "bold" }}>
+              Tonnage Optimization
             </span>
-
-            <button className="btn" onClick={() => setShowPrintPart(true)}>
-              Report
-            </button>
-
-            <button className="btn" onClick={handleCloseSession}>
-              Close Session
-            </button>
           </div>
-        ) : (
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button className="btn" onClick={openSessionList}>
-              View Sessions
-            </button>
-            <button className="btn primary" onClick={openNewSession}>
-              New Session
-            </button>
+        </div>
+
+        {session && (
+          <div className="d-flex mr-4" style={{ border: "1px solid #808080" }}>
+            <div className="pl-1 pr-1">
+              <span>
+                Session Name:
+                <span style={{ fontSize: "15px", fontWeight: "bold", color: "#3f5e55" }}> {session.name} </span>
+              </span>
+            </div>
           </div>
         )}
       </div>
@@ -137,32 +124,66 @@ main
       )}
 
       {/* WORKSPACE */}
-      {session && !ShowPrintPart && <Tabs session={session} />}
+      <div className="d-flex">
+        <div className={ShowPrintPart ? "col-md-12" : "col-md-10"}>
+          {session ? (
+            !ShowPrintPart ? (
+              <Tabs session={session} onCloseSession={handleCloseSession} />
+            ) : (
+              <TonnageReport
+                session={session}
+                SessionName={session ? session.name : "Default Session"}
+                MoldName={"Sample Mold"}
+                selectedPrintSections={{
+                  StudyWeight: true,
+                  Dim1: true,
+                  Dim2: true,
+                  Notes: true
+                }}
+                onClose={() => setShowPrintPart(false)}
+              />
+            )
+          ) : (
+            /* If no session, show options to start/view sessions */
+            <div className="p-4">
+              <h4>Please start or select a session to proceed.</h4>
+              <div className="mt-3">
+                <button className="btn btn-primary mr-2" onClick={openNewSession}>
+                  New Session
+                </button>
+                <button className="btn btn-secondary" onClick={openSessionList}>
+                  View Sessions
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
-      {/* REPORT VIEW */}
-      {ShowPrintPart && (
-        <TonnageReport
-          session={session}
-          SessionName={session ? session.name : "Default Session"}
-          MoldName={"Sample Mold"}
-          selectedPrintSections={{
-            StudyWeight: true,
-            Dim1: true,
-            Dim2: true,
-            Notes: true
-          }}
-          onClose={() => setShowPrintPart(false)}
-        />
-      )}
+        {!ShowPrintPart && session && (
+          <div className="col-md-2 text-right">
+            <button
+              className="btn btn-secondary btn-air-secondary m-0"
+              type="button"
+              onClick={() => setShowPrintPart(true)}
+            >
+              Report
+            </button>
+
+            <button
+              className="btn btn-secondary btn-air-secondary mr-2 ml-2"
+              type="button"
+              onClick={() => window.print()}
+            >
+              Print
+            </button>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 };
 
-tonnage-optimization
-
-
-
-
-export default TonnageOptimization;
 export default connect(null, { setHeaderTitle })(TonnageOptimization);
- main
+
+
