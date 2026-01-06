@@ -12,25 +12,16 @@ import { connect } from "react-redux";
 const TonnageOptimization = ({ setHeaderTitle }) => {
 
   useEffect(() => {
-      setHeaderTitle("Tonnage Optimization");
-    }, [setHeaderTitle]);
-
- tonnage-optimization
-const TonnageOptimization = () => {
+    setHeaderTitle("Tonnage Optimization");
+  }, [setHeaderTitle]);
 
   // Report view toggle
   // Report view toggle
   const [ShowPrintPart, setShowPrintPart] = useState(false);
 
-
-
   // Session & Mold details (aligns with EQ pattern)
-
-
   // Report section selection
 
-
-main
   const [showNewModal, setShowNewModal] = useState(false);
   const [showSessionList, setShowSessionList] = useState(false);
   const [session, setSession] = useState(null);
@@ -158,11 +149,4 @@ main
   );
 };
 
-tonnage-optimization
-
-
-
-
-export default TonnageOptimization;
 export default connect(null, { setHeaderTitle })(TonnageOptimization);
- main
