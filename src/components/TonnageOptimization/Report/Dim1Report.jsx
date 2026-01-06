@@ -44,12 +44,12 @@ export async function generateDim1Section({
 
     if (chartImage) {
         const overlayBand = new Stimulsoft.Report.Components.StiOverlayBand();
-        overlayBand.height = 5.0;
-        overlayBand.printOn = 1; // 1 = OnlyFirstPage
+        overlayBand.height = 7.0;
+        overlayBand.printOn = 0; // 0 = AllPages
         page.components.add(overlayBand);
 
         const chartLeft = 6.0;
-        const chartTop = 0.15;
+        const chartTop = 2.0; // Start after PageHeader (which is 2.0)
         const chartWidth = 5.0;
         const chartHeight = 4.5;
 
@@ -63,8 +63,9 @@ export async function generateDim1Section({
 
         const chartImg = new Stimulsoft.Report.Components.StiImage();
         chartImg.clientRectangle = new Stimulsoft.Base.Drawing.RectangleD(chartLeft, chartTop + 0.35, chartWidth, chartHeight);
-        chartImg.file = chartImage;
+        chartImg.imageData = chartImage.replace(/^data:image\/png;base64,/, "");
         chartImg.stretch = true;
+        chartImg.aspectRatio = true;
         chartImg.border = new Stimulsoft.Base.Drawing.StiBorder(Stimulsoft.Base.Drawing.StiBorderSides.All, Stimulsoft.System.Drawing.Color.black, 1);
         overlayBand.components.add(chartImg);
     }

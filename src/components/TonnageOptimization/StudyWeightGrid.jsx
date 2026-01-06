@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../EquipmentQualification/Grid.css"; // Import EQ Grid CSS
 
-const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
+const StudyWeightGrid = ({ getData, data, setData }) => {
     const StudyWeightTableRef = useRef(null);
     const table = StudyWeightTableRef.current;
 
@@ -20,12 +20,12 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
     // Update selection highlighting when selectionRange changes
     useEffect(() => {
         if (!table) return;
-        
+
         // Remove all selections first
         table.querySelectorAll(".selected").forEach((cell) => {
             cell.classList.remove("selected");
         });
-        
+
         // Apply selection to cells in range
         const { startRow, startCol, endRow, endCol } = selectionRange;
         if (startRow !== null && startCol !== null && endRow !== null && endCol !== null) {
@@ -33,7 +33,7 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
             const maxRow = Math.max(startRow, endRow);
             const minCol = Math.min(startCol, endCol);
             const maxCol = Math.max(startCol, endCol);
-            
+
             for (let row = minRow; row <= maxRow; row++) {
                 for (let col = minCol; col <= maxCol; col++) {
                     if (![4, 5, 6].includes(col)) { // Only select editable columns
@@ -51,10 +51,9 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
     const handleMouseDown = (rowIndex, colIndex, event) => {
         if ([4, 5, 6].includes(colIndex)) return; // Prevent selecting non-editable columns (avg, inc, perc)
 
-        event.preventDefault();
         setIsSelecting(true);
         setSelectionRange({ startRow: rowIndex, startCol: colIndex, endRow: rowIndex, endCol: colIndex });
-        
+
         // Clear previous selection
         if (table) {
             table.querySelectorAll(".selected").forEach((cell) => {
@@ -98,7 +97,7 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
         const clipboardData = event.clipboardData.getData("text");
 
         const selectedCell = document.activeElement;
-        
+
         // Check: Ensure focus is on a valid grid cell
         if (
             !selectedCell ||
@@ -172,7 +171,7 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
 
             return newData;
         });
-        
+
         // Trigger getData after paste to recalculate
         setTimeout(() => {
             if (getData) {
@@ -217,7 +216,7 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
     const findNextEditableCell = (startRow, startCol, direction) => {
         const nonEditableCols = [4, 5, 6]; // Columns that are not editable
         const totalCols = data[0]?.length || 7;
-        
+
         if (direction === 'right') {
             // Move right, skipping non-editable columns
             for (let col = startCol + 1; col < totalCols; col++) {
@@ -253,205 +252,208 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
     };
 
     const clearAllSelections = () => {
-  if (!table) return;
-  table.querySelectorAll(".selected").forEach(cell => {
-    cell.classList.remove("selected");
-  });
-};
+        if (!table) return;
+        table.querySelectorAll(".selected").forEach(cell => {
+            cell.classList.remove("selected");
+        });
+    };
 
 
     // Handle keyboard navigation
     const handleKeyDown = (event, rowIndex, colIndex) => {
         // **Handle Tab Key (Move to Next Editable Cell)**
-       if (event.key === "Tab") {
-  event.preventDefault();
+        if (event.key === "Tab") {
+            event.preventDefault();
 
-  const direction = event.shiftKey ? "left" : "right";
-  const next = findNextEditableCell(rowIndex, colIndex, direction);
+            const direction = event.shiftKey ? "left" : "right";
+            const next = findNextEditableCell(rowIndex, colIndex, direction);
 
-  if (next) {
-    const nextCell = table?.querySelector(
-      `[data-row='${next.row}'][data-col='${next.col}']`
-    );
+            if (next) {
+                const nextCell = table?.querySelector(
+                    `[data-row='${next.row}'][data-col='${next.col}']`
+                );
 
-    if (nextCell) {
-      // 🔴 CLEAR old highlight
-      clearAllSelections();
+                if (nextCell) {
+                    // 🔴 CLEAR old highlight
+                    clearAllSelections();
 
-      // 🔵 UPDATE selection state
-      setSelectionRange({
-        startRow: next.row,
-        startCol: next.col,
-        endRow: next.row,
-        endCol: next.col
-      });
+                    // 🔵 UPDATE selection state
+                    setSelectionRange({
+                        startRow: next.row,
+                        startCol: next.col,
+                        endRow: next.row,
+                        endCol: next.col
+                    });
 
-      // 🔵 APPLY highlight
-      nextCell.classList.add("selected");
+                    // 🔵 APPLY highlight
+                    nextCell.classList.add("selected");
 
-      // 🔵 MOVE focus
-      nextCell.focus();
-    }
-  }
+                    // 🔵 MOVE focus
+                    nextCell.focus();
+                }
+            }
 
-  return;
-}
+            return;
+        }
 
 
         // **Handle Enter Key (Move to Next Row)**
-      if (event.key === "Enter") {
-  event.preventDefault(); // Prevent newline in contentEditable
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent newline in contentEditable
 
-  const nextRow = rowIndex + 1;
+            const nextRow = rowIndex + 1;
 
-  if (nextRow < data.length) {
-    const cellEl = table?.querySelector(
-      `[data-row='${nextRow}'][data-col='${colIndex}']`
-    );
+            if (nextRow < data.length) {
+                const cellEl = table?.querySelector(
+                    `[data-row='${nextRow}'][data-col='${colIndex}']`
+                );
 
-    if (cellEl && cellEl.contentEditable !== "false") {
-      // 🔴 CLEAR previous selection
-      clearAllSelections();
+                if (cellEl && cellEl.contentEditable !== "false") {
+                    // 🔴 CLEAR previous selection
+                    clearAllSelections();
 
-      // 🔵 SET new single-cell selection
-      setSelectionRange({
-        startRow: nextRow,
-        startCol: colIndex,
-        endRow: nextRow,
-        endCol: colIndex
-      });
+                    // 🔵 SET new single-cell selection
+                    setSelectionRange({
+                        startRow: nextRow,
+                        startCol: colIndex,
+                        endRow: nextRow,
+                        endCol: colIndex
+                    });
 
-      // 🔵 APPLY visual highlight
-      cellEl.classList.add("selected");
+                    // 🔵 APPLY visual highlight
+                    cellEl.classList.add("selected");
 
-      // 🔵 MOVE focus
-      cellEl.focus();
-    }
-  }
+                    // 🔵 MOVE focus
+                    cellEl.focus();
+                }
+            }
 
-  return;
-}
+            return;
+        }
 
         // Get the current cell element
         const cell = event.target;
         const selection = window.getSelection();
         const cursorPos = selection.focusOffset;
         const textLength = cell.innerText.length;
-        const nonEditableCols = [4, 5, 6];
 
         // Handle Arrow Right (Move within text, then jump to next editable cell)
-       if (event.key === "ArrowRight") {
-  const nextPos = findNextEditableCell(rowIndex, colIndex, "right");
+        if (event.key === "ArrowRight") {
+            if (cursorPos < textLength) return; // Allow moving within text
 
-  if (nextPos) {
-    const cellEl = table?.querySelector(
-      `[data-row='${nextPos.row}'][data-col='${nextPos.col}']`
-    );
+            const nextPos = findNextEditableCell(rowIndex, colIndex, "right");
 
-    if (cellEl) {
-      clearAllSelections();
+            if (nextPos) {
+                const cellEl = table?.querySelector(
+                    `[data-row='${nextPos.row}'][data-col='${nextPos.col}']`
+                );
 
-      setSelectionRange({
-        startRow: nextPos.row,
-        startCol: nextPos.col,
-        endRow: nextPos.row,
-        endCol: nextPos.col
-      });
+                if (cellEl) {
+                    clearAllSelections();
 
-      cellEl.classList.add("selected");
-      cellEl.focus();
-    }
-  }
+                    setSelectionRange({
+                        startRow: nextPos.row,
+                        startCol: nextPos.col,
+                        endRow: nextPos.row,
+                        endCol: nextPos.col
+                    });
 
-  event.preventDefault();
-  return;
-}
+                    cellEl.classList.add("selected");
+                    cellEl.focus();
+                }
+            }
+
+            event.preventDefault();
+            return;
+        }
 
 
         // Handle Arrow Left (Move within text, then jump to previous editable cell)
-       if (event.key === "ArrowLeft") {
-  const prevPos = findNextEditableCell(rowIndex, colIndex, "left");
+        if (event.key === "ArrowLeft") {
+            if (cursorPos > 0) return; // Allow moving within text
 
-  if (prevPos) {
-    const cellEl = table?.querySelector(
-      `[data-row='${prevPos.row}'][data-col='${prevPos.col}']`
-    );
+            const prevPos = findNextEditableCell(rowIndex, colIndex, "left");
 
-    if (cellEl) {
-      clearAllSelections();
+            if (prevPos) {
+                const cellEl = table?.querySelector(
+                    `[data-row='${prevPos.row}'][data-col='${prevPos.col}']`
+                );
 
-      setSelectionRange({
-        startRow: prevPos.row,
-        startCol: prevPos.col,
-        endRow: prevPos.row,
-        endCol: prevPos.col
-      });
+                if (cellEl) {
+                    clearAllSelections();
 
-      cellEl.classList.add("selected");
-      cellEl.focus();
-    }
-  }
+                    setSelectionRange({
+                        startRow: prevPos.row,
+                        startCol: prevPos.col,
+                        endRow: prevPos.row,
+                        endCol: prevPos.col
+                    });
 
-  event.preventDefault();
-  return;
-}
+                    cellEl.classList.add("selected");
+                    cellEl.focus();
+                }
+            }
+
+            event.preventDefault();
+            return;
+        }
 
         // Handle Arrow Down (Move to the cell below, skip if non-editable)
-     if (event.key === "ArrowDown") {
-  const nextRow = rowIndex + 1;
+        if (event.key === "ArrowDown") {
+            const nextRow = rowIndex + 1;
 
-  if (nextRow < data.length) {
-    const cellEl = table?.querySelector(
-      `[data-row='${nextRow}'][data-col='${colIndex}']`
-    );
+            if (nextRow < data.length) {
+                const cellEl = table?.querySelector(
+                    `[data-row='${nextRow}'][data-col='${colIndex}']`
+                );
 
-    if (cellEl && cellEl.contentEditable !== "false") {
-      clearAllSelections();
+                if (cellEl && cellEl.contentEditable !== "false") {
+                    clearAllSelections();
 
-      setSelectionRange({
-        startRow: nextRow,
-        startCol: colIndex,
-        endRow: nextRow,
-        endCol: colIndex
-      });
+                    setSelectionRange({
+                        startRow: nextRow,
+                        startCol: colIndex,
+                        endRow: nextRow,
+                        endCol: colIndex
+                    });
 
-      cellEl.classList.add("selected");
-      cellEl.focus();
-    }
-  }
+                    cellEl.classList.add("selected");
+                    cellEl.focus();
+                }
+            }
 
-  event.preventDefault();
-  return;
-}
+            event.preventDefault();
+            return;
+        }
 
 
         // Handle Arrow Up (Move to the cell above, skip if non-editable)
-       if (event.key === "ArrowUp") {
-  const prevRow = rowIndex - 1;
+        if (event.key === "ArrowUp") {
+            const prevRow = rowIndex - 1;
 
-  if (prevRow >= 0) {
-    const cellEl = table?.querySelector(
-      `[data-row='${prevRow}'][data-col='${colIndex}']`
-    );
+            if (prevRow >= 0) {
+                const cellEl = table?.querySelector(
+                    `[data-row='${prevRow}'][data-col='${colIndex}']`
+                );
 
-    if (cellEl && cellEl.contentEditable !== "false") {
-      clearAllSelections();
+                if (cellEl && cellEl.contentEditable !== "false") {
+                    clearAllSelections();
 
-      setSelectionRange({
-        startRow: prevRow,
-        startCol: colIndex,
-        endRow: prevRow,
-        endCol: colIndex
-      });
+                    setSelectionRange({
+                        startRow: prevRow,
+                        startCol: colIndex,
+                        endRow: prevRow,
+                        endCol: colIndex
+                    });
 
-      cellEl.classList.add("selected");
-      cellEl.focus();
-    }
-  }
+                    cellEl.classList.add("selected");
+                    cellEl.focus();
+                }
+            }
 
-  event.preventDefault();
-  return;
-}
+            event.preventDefault();
+            return;
+        }
 
 
         // **Restrict input to numbers and one decimal**
@@ -474,31 +476,30 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
     };
 
     // Handle cell selection for copying
-  const handleCellClick = (rowIndex, colIndex, event) => {
-    if (!event.target) return;
+    const handleCellClick = (rowIndex, colIndex, event) => {
+        if (!event.target) return;
 
-    // ✅ CLEAR range selection when clicking a single cell
-    setSelectionRange({
-        startRow: rowIndex,
-        startCol: colIndex,
-        endRow: rowIndex,
-        endCol: colIndex,
-    });
-
-    // Remove all previous selections
-    if (table) {
-        table.querySelectorAll(".selected").forEach((cell) => {
-            cell.classList.remove("selected");
+        // ✅ CLEAR range selection when clicking a single cell
+        setSelectionRange({
+            startRow: rowIndex,
+            startCol: colIndex,
+            endRow: rowIndex,
+            endCol: colIndex,
         });
-    }
 
-    // Mark only the clicked cell
-    event.target.classList.add("selected");
+        // Remove all previous selections
+        if (table) {
+            table.querySelectorAll(".selected").forEach((cell) => {
+                cell.classList.remove("selected");
+            });
+        }
 
-    // ✅ CRITICAL: move keyboard focus
-    event.target.focus()
-    setRowToBeDeleted(rowIndex);
-};
+        // Mark only the clicked cell
+        event.target.classList.add("selected");
+
+        // ✅ CRITICAL: move keyboard focus
+        event.target.focus()
+    };
 
 
     const handleOnInput = (event) => {
@@ -514,15 +515,15 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
         selection.addRange(range);
     };
 
-   const [columnWidths, setColumnWidths] = useState([
-  90,   // Tonnage
-  90,   // Sample 1
-  90,   // Sample 2
-  90,   // Sample 3
-  120,  // Average Weight
-  120,  // Actual Increase
-  100   // % Increase
-]);
+    const [columnWidths, setColumnWidths] = useState([
+        90,   // Tonnage
+        90,   // Sample 1
+        90,   // Sample 2
+        90,   // Sample 3
+        120,  // Average Weight
+        120,  // Actual Increase
+        100   // % Increase
+    ]);
 
     const ResizeColumnWidth = (event, colIndex) => {
         event.preventDefault();
@@ -553,71 +554,71 @@ const StudyWeightGrid = ({ getData, data, setData, setRowToBeDeleted }) => {
     return (
         <div id="StudyWeight_Grid">
             <div className="table-container"><div
-  className="table-scroll-wrapper"
-  style={{
-    maxHeight: "260px",   // ⬅ table HEIGHT
-    overflowY: "auto",    // ⬅ vertical scroll
-    overflowX: "auto",    // ⬅ horizontal scroll
-  }}
->
+                className="table-scroll-wrapper"
+                style={{
+                    maxHeight: "260px",   // ⬅ table HEIGHT
+                    overflowY: "auto",    // ⬅ vertical scroll
+                    overflowX: "auto",    // ⬅ horizontal scroll
+                }}
+            >
 
-                    <table
-                        ref={StudyWeightTableRef}
-                        id="StudyWeight_Sheet"
-                        className="excel-table"
-                        onPaste={handlePaste}
-                        onCopy={handleCopy}
-                        onMouseUp={handleMouseUp}
-                         style={{
-    tableLayout: "fixed", // ⬅ CRITICAL
-    width: "55%",
-    minWidth: "200px"     // ⬅ prevents over-expansion
-  }}
-                    >
-                        <thead>
-                            <tr>
-                                {[
-                                    "Tonnage", "Sample 1", "Sample 2", "Sample 3", 
-                                    "Average Weight", "Actual Increase", "% Increase"
-                                ].map((colName, colIndex) => (
-                                    <th key={colIndex} style={{
-                                        width: `${columnWidths[colIndex]}px`,
-                                    }}>
-                                        {colName}
-                                        <div
-                                            className="column-resizer"
-                                            onMouseDown={(event) => ResizeColumnWidth(event, colIndex)}
-                                        />
-                                    </th>
+                <table
+                    ref={StudyWeightTableRef}
+                    id="StudyWeight_Sheet"
+                    className="excel-table"
+                    onPaste={handlePaste}
+                    onCopy={handleCopy}
+                    onMouseUp={handleMouseUp}
+                    style={{
+                        tableLayout: "fixed", // ⬅ CRITICAL
+                        width: "55%",
+                        minWidth: "200px"     // ⬅ prevents over-expansion
+                    }}
+                >
+                    <thead>
+                        <tr>
+                            {[
+                                "Tonnage", "Sample 1", "Sample 2", "Sample 3",
+                                "Average Weight", "Actual Increase", "% Increase"
+                            ].map((colName, colIndex) => (
+                                <th key={colIndex} style={{
+                                    width: `${columnWidths[colIndex]}px`,
+                                }}>
+                                    {colName}
+                                    <div
+                                        className="column-resizer"
+                                        onMouseDown={(event) => ResizeColumnWidth(event, colIndex)}
+                                    />
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                                {row.map((cell, colIndex) => (
+                                    <td
+                                        key={colIndex}
+                                        contentEditable={colIndex < 4}
+                                        data-row={rowIndex}
+                                        data-col={colIndex}
+                                        onInput={colIndex < 4 ? handleOnInput : undefined}
+                                        onBlur={colIndex < 4 ? getData : undefined}
+                                        onClick={(e) => handleCellClick(rowIndex, colIndex, e)}
+                                        onKeyDown={colIndex < 4 ? (e) => handleKeyDown(e, rowIndex, colIndex) : undefined}
+                                        className={isCellSelected(rowIndex, colIndex) ? "selected e-cell" : "e-cell"}
+                                        onMouseDown={(e) => handleMouseDown(rowIndex, colIndex, e)}
+                                        onMouseMove={() => handleMouseMove(rowIndex, colIndex)}
+                                        suppressContentEditableWarning={true}
+                                    >
+                                        {cell || ""}
+                                    </td>
                                 ))}
                             </tr>
-                        </thead>
-                        <tbody>
-                            {data.map((row, rowIndex) => (
-                                <tr key={rowIndex}>
-                                    {row.map((cell, colIndex) => (
-                                        <td
-                                            key={colIndex}
-                                            contentEditable={colIndex < 4}
-                                            data-row={rowIndex}
-                                            data-col={colIndex}
-                                            onInput={colIndex < 4 ? handleOnInput : undefined}
-                                            onBlur={colIndex < 4 ? getData : undefined}
-                                            onClick={(e) => handleCellClick(rowIndex, colIndex, e)}
-                                            onKeyDown={colIndex < 4 ? (e) => handleKeyDown(e, rowIndex, colIndex) : undefined}
-                                            className={isCellSelected(rowIndex, colIndex) ? "selected e-cell" : "e-cell"}
-                                            onMouseDown={(e) => handleMouseDown(rowIndex, colIndex, e)}
-                                            onMouseMove={() => handleMouseMove(rowIndex, colIndex)}
-                                            suppressContentEditableWarning={true}
-                                        >
-                                            {cell || ""}
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             </div>
         </div>
     );

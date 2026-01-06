@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../EquipmentQualification/Grid.css"; // Import EQ Grid CSS
 
-const Dim1Grid = ({ getData, data, setData, setRowToBeDeleted }) => {
+const Dim1Grid = ({ getData, data, setData }) => {
     const Dim1TableRef = useRef(null);
     const table = Dim1TableRef.current;
 
@@ -51,7 +51,6 @@ const Dim1Grid = ({ getData, data, setData, setRowToBeDeleted }) => {
     const handleMouseDown = (rowIndex, colIndex, event) => {
         if ([4, 5, 6].includes(colIndex)) return; // Prevent selecting non-editable columns (avg, inc, perc)
 
-        event.preventDefault();
         setIsSelecting(true);
         setSelectionRange({ startRow: rowIndex, startCol: colIndex, endRow: rowIndex, endCol: colIndex });
 
@@ -337,10 +336,11 @@ const Dim1Grid = ({ getData, data, setData, setRowToBeDeleted }) => {
         const selection = window.getSelection();
         const cursorPos = selection.focusOffset;
         const textLength = cell.innerText.length;
-        const nonEditableCols = [4, 5, 6];
 
         // Handle Arrow Right (Move within text, then jump to next editable cell)
         if (event.key === "ArrowRight") {
+            if (cursorPos < textLength) return; // Allow moving within text
+
             const nextPos = findNextEditableCell(rowIndex, colIndex, "right");
 
             if (nextPos) {
@@ -370,6 +370,8 @@ const Dim1Grid = ({ getData, data, setData, setRowToBeDeleted }) => {
 
         // Handle Arrow Left (Move within text, then jump to previous editable cell)
         if (event.key === "ArrowLeft") {
+            if (cursorPos > 0) return; // Allow moving within text
+
             const prevPos = findNextEditableCell(rowIndex, colIndex, "left");
 
             if (prevPos) {
@@ -486,8 +488,6 @@ const Dim1Grid = ({ getData, data, setData, setRowToBeDeleted }) => {
             }
             event.target.classList.add("selected");
         }
-
-        setRowToBeDeleted(rowIndex);
     };
 
     const handleOnInput = (event) => {

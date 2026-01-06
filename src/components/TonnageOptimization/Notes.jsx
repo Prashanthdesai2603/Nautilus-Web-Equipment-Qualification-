@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   HtmlEditor,
   RichTextEditorComponent,
@@ -6,7 +6,7 @@ import {
   Inject,
 } from "@syncfusion/ej2-react-richtexteditor";
 
-const Notes = ({ sessionId }) => {
+const Notes = ({ sessionId, onClose }) => {
   const storageKey = sessionId ? `notesData_${sessionId}` : "notesData";
   const rteRef = useRef(null);
 
@@ -29,37 +29,6 @@ const Notes = ({ sessionId }) => {
   const handleSave = () => {
     localStorage.setItem(storageKey, comment);
     alert("Notes saved successfully");
-  };
-
-  // Print
-  const handlePrint = () => {
-    const printWindow = window.open("", "", "width=900,height=600");
-    if (!printWindow) return;
-
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Notes</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              padding: 20px;
-            }
-          </style>
-        </head>
-        <body>
-          ${comment || "No notes available"}
-        </body>
-      </html>
-    `);
-
-    printWindow.document.close();
-    printWindow.print();
-  };
-
-  // Close (kept consistent with other tabs)
-  const handleClose = () => {
-    console.log("Notes closed");
   };
 
   /* ================= TOOLBAR ================= */
@@ -95,13 +64,17 @@ const Notes = ({ sessionId }) => {
         flexDirection: "column",
       }}
     >
-      {/* HEADER */}
-      <div className="mb-2">
-        <h6 className="mb-0">Notes</h6>
+      {/* TOP BAR - Matching EQ style */}
+      <div className="pt-2 pb-2 pr-2 pl-1 mb-2">
+        <div className="d-flex col-md-12">
+          <div className="col-md-9 d-flex align-items-center">
+            <h6 className="mb-0">Notes</h6>
+          </div>
+        </div>
       </div>
 
       {/* EDITOR (SCROLLABLE AREA) */}
-      <div style={{ flex: 1, overflow: "hidden" }}>
+      <div style={{ flex: 1, overflow: "hidden", border: "1px solid #ccc", backgroundColor: "#fff" }}>
         <RichTextEditorComponent
           ref={rteRef}
           value={comment}
@@ -113,26 +86,20 @@ const Notes = ({ sessionId }) => {
         </RichTextEditorComponent>
       </div>
 
-      {/* FOOTER BUTTONS (ALWAYS VISIBLE) */}
+      {/* ACTION BUTTONS - FOOTER */}
       <div
         style={{
           display: "flex",
           justifyContent: "flex-start",
           gap: "10px",
-          marginTop: "10px",
-          paddingTop: "10px",
-          borderTop: "1px solid #c3c3c3",
+          padding: "10px",
+          borderTop: "1px solid #ccc",
+          backgroundColor: "#f5f5f5",
+          marginTop: "10px"
         }}
       >
         <button
           className="btn btn-secondary btn-air-secondary"
-          onClick={handlePrint}
-        >
-          Print
-        </button>
-
-        <button
-          className="btn btn-primary btn-air-primary"
           onClick={handleSave}
         >
           Save
@@ -140,13 +107,17 @@ const Notes = ({ sessionId }) => {
 
         <button
           className="btn btn-secondary btn-air-secondary"
-          onClick={handleClose}
+          onClick={() => {
+            if (onClose) onClose();
+          }}
         >
           Close
         </button>
       </div>
+
     </div>
   );
 };
 
 export default Notes;
+

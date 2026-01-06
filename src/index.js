@@ -36,9 +36,9 @@ const Root = () => {
       <Provider store={store}>
         <BrowserRouter basename={`/`}>
           <Switch>
-            {/* Redirect root to dashboard */}
+            {/* Redirect root to Tonnage */}
             <Route exact path="/">
-              <Redirect to="/dashboard" />
+              <Redirect to="/Tonnage" />
             </Route>
 
             {/* Main app with Equipment Dashboard */}
