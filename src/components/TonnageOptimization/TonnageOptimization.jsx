@@ -181,8 +181,5 @@ const TonnageOptimization = ({ setHeaderTitle }) => {
 };
 
 export default connect(null, { setHeaderTitle })(TonnageOptimization);
-<<<<<<< HEAD
-=======
 
 
->>>>>>> f086388b42d1dfc17cafb6a146fedadcc1004e82
