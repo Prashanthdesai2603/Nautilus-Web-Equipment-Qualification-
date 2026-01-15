@@ -1,0 +1,21 @@
+.table-container {
+    overflow: visible !important; /* Ensure all columns are visible */
+    width: 100%;
+    max-width: none; /* Allow grid to expand beyond container */
+}
+
+/* Force grid to display all columns without scrolling */
+.e-grid {
+    overflow: visible !important;
+    white-space: nowrap !important;
+    min-width: 100%;
+    border: 2px solid #2d5e82;
+}
+
+/* Ensure table expands in print */
+@media print {
+    .e-grid {
+        width: auto !important;
+        overflow: visible !important;
+    }
+}

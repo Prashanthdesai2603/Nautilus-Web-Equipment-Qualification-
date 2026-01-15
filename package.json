@@ -6,6 +6,7 @@
     "@syncfusion/ej2-base": "~24.2.8",
     "@syncfusion/ej2-popups": "~24.2.8",
     "@syncfusion/ej2-react-charts": "~24.2.8",
+    "@syncfusion/ej2-react-grids": "~24.2.8",
     "@syncfusion/ej2-react-navigations": "~24.2.8",
     "@syncfusion/ej2-react-richtexteditor": "~24.2.8",
     "@syncfusion/ej2-react-spreadsheet": "~24.2.8",

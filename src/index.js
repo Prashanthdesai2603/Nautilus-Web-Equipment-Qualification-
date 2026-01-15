@@ -8,6 +8,25 @@ import store from "./store";
 import { registerLicense } from "@syncfusion/ej2-base";
 
 import EquipmentDashboard from "./components/EquipmentQualification/EquipmentDashboard";
+import Database from "./components/database/Database";
+
+// Material Database Pages
+import MaterialNew from "./components/database/MaterialDatabase/MaterialNew";
+import MaterialEdit from "./components/database/MaterialDatabase/MaterialEdit";
+import MaterialView from "./components/database/MaterialDatabase/MaterialView";
+import MaterialDuplicate from "./components/database/MaterialDatabase/MaterialDuplicate";
+
+// Mold Database Pages
+import MoldNew from "./components/database/MoldDatabase/MoldNew";
+import MoldEdit from "./components/database/MoldDatabase/MoldEdit";
+import MoldView from "./components/database/MoldDatabase/MoldView";
+import MoldDuplicate from "./components/database/MoldDatabase/MoldDuplicate";
+
+// Machine Database Pages
+import MachineNew from "./components/database/MachineDatabase/MachineNew";
+import MachineEdit from "./components/database/MachineDatabase/MachineEdit";
+import MachineView from "./components/database/MachineDatabase/MachineView";
+import MachineDuplicate from "./components/database/MachineDatabase/MachineDuplicate";
 
 // Import Stimulsoft for license registration
 import { Stimulsoft } from "stimulsoft-reports-js/Scripts/stimulsoft.reports";
@@ -43,14 +62,27 @@ const Root = () => {
 
             {/* Main app with Equipment Dashboard */}
             <App>
-              <Route
-                path="/dashboard"
-                component={EquipmentDashboard}
-              />
-              <Route
-                path="/Tonnage"
-                component={TonnageOptimization}
-              />
+              <Route path="/dashboard" component={EquipmentDashboard} />
+              <Route exact path="/databases" component={Database} />
+              <Route path="/Tonnage" component={TonnageOptimization} />
+              
+              {/* Material Database Routes */}
+              <Route path="/database/Options/MaterialNew" component={MaterialNew} />
+              <Route path="/database/Options/:RowId/MaterialEdit" component={MaterialEdit} />
+              <Route path="/database/Options/:RowId/MaterialView" component={MaterialView} />
+              <Route path="/database/Options/:RowId/MaterialDuplicate" component={MaterialDuplicate} />
+              
+              {/* Mold Database Routes */}
+              <Route path="/database/Options/MoldNew" component={MoldNew} />
+              <Route path="/database/Options/:RowId/MoldEdit" component={MoldEdit} />
+              <Route path="/database/Options/:RowId/MoldView" component={MoldView} />
+              <Route path="/database/Options/:RowId/MoldDuplicate" component={MoldDuplicate} />
+              
+              {/* Machine Database Routes */}
+              <Route path="/database/Options/MachineNew" component={MachineNew} />
+              <Route path="/database/Options/:RowId/MachineEdit" component={MachineEdit} />
+              <Route path="/database/Options/:RowId/MachineView" component={MachineView} />
+              <Route path="/database/Options/:RowId/MachineDuplicate" component={MachineDuplicate} />
             </App>
           </Switch>
         </BrowserRouter>
