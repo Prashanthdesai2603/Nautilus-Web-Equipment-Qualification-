@@ -1,17 +1,25 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { MENUITEMS } from "../../../components/common/sidebar-component/menu";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/images/Naut8.jpg";
 
 const Sidebar = (props) => {
-  
+  const [menuItems, setMenuItems] = useState(MENUITEMS);
+
   const toggletNavActive = (item) => {
-    if (!item.active) {
-      MENUITEMS.forEach((a) => {
-        if (MENUITEMS.includes(item)) a.active = false;
-      });
-    }
-    item.active = !item.active;
+    const updatedMenu = menuItems.map((menuItem) => {
+      if (menuItem === item) {
+        menuItem.active = !menuItem.active;
+      } else if (!item.active && menuItems.includes(item)) {
+        // Close other top-level menus if this one is opening
+        // Only if it's a top-level menu
+        if (menuItems.includes(item)) {
+          menuItem.active = false;
+        }
+      }
+      return menuItem;
+    });
+    setMenuItems([...updatedMenu]);
   };
 
   return (
@@ -28,9 +36,9 @@ const Sidebar = (props) => {
           <ul
             className="sidebar-menu"
             id="myDIV"
-            // style={{ width: '300px' }}
+          // style={{ width: '300px' }}
           >
-            {MENUITEMS.map((menuItem, i) => (
+            {menuItems.map((menuItem, i) => (
               <li className={`${menuItem.active ? "active" : ""}`} key={i}>
                 {menuItem.sidebartitle ? (
                   <div className="sidebar-title">
@@ -48,14 +56,12 @@ const Sidebar = (props) => {
                     onClick={() => toggletNavActive(menuItem)}
                     title={menuItem.title}
                   >
-                    {/* <menuItem.icon /> */}
                     <img
                       src={menuItem.icon}
                       alt={`${menuItem.title}`}
                       className="menu-icon"
                       style={{ width: "25px", height: "25px" }}
                     />
-                    {/* <span>{props.t(menuItem.title)}</span> */}
                   </a>
                 ) : (
                   ""
@@ -64,23 +70,43 @@ const Sidebar = (props) => {
                 {menuItem.type === "link" ? (
                   <Link
                     to={`${menuItem.path}`}
-                    className={`sidebar-header ${
-                      menuItem.active ? "active" : ""
-                    }`}
+                    className={`sidebar-header ${menuItem.active ? "active" : ""
+                      }`}
                     onClick={() => toggletNavActive(menuItem)}
                     title={menuItem.title}
                   >
-                    {/* <menuItem.icon /> */}
                     <img
                       src={menuItem.icon}
                       alt={`${menuItem.title}`}
                       className="menu-icon"
                       style={{ width: "30px", height: "30px" }}
                     />
-                    {/* <span>{props.t(menuItem.title)}</span> */}
-                    {/* {menuItem.children ?
-                                                <i className="fa fa-angle-right pull-right"></i> : ''} */}
                   </Link>
+                ) : (
+                  ""
+                )}
+
+                {menuItem.children ? (
+                  <ul
+                    className={`sidebar-submenu ${menuItem.active ? "menu-open" : ""}`}
+                    style={menuItem.active ? { opacity: 1, transition: 'opacity 500ms ease-in', display: 'block' } : { display: 'none' }}
+                  >
+                    {menuItem.children.map((childrenItem, index) => (
+                      <li key={index} className={childrenItem.active ? "active" : ""}>
+                        {childrenItem.type === "link" ? (
+                          <Link
+                            to={childrenItem.path}
+                            className={childrenItem.active ? "active" : ""}
+                            onClick={() => toggletNavActive(childrenItem)}
+                          >
+                            <i className="fa fa-circle"></i> {childrenItem.title}
+                          </Link>
+                        ) : (
+                          ""
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                 ) : (
                   ""
                 )}

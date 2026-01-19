@@ -27,6 +27,7 @@ import MachineNew from "./components/database/MachineDatabase/MachineNew";
 import MachineEdit from "./components/database/MachineDatabase/MachineEdit";
 import MachineView from "./components/database/MachineDatabase/MachineView";
 import MachineDuplicate from "./components/database/MachineDatabase/MachineDuplicate";
+import ImportMaterial from "./components/database/ImportMaterial/ImportMaterial";
 
 // Import Stimulsoft for license registration
 import { Stimulsoft } from "stimulsoft-reports-js/Scripts/stimulsoft.reports";
@@ -65,24 +66,27 @@ const Root = () => {
               <Route path="/dashboard" component={EquipmentDashboard} />
               <Route exact path="/databases" component={Database} />
               <Route path="/Tonnage" component={TonnageOptimization} />
-              
+
               {/* Material Database Routes */}
               <Route path="/database/Options/MaterialNew" component={MaterialNew} />
               <Route path="/database/Options/:RowId/MaterialEdit" component={MaterialEdit} />
               <Route path="/database/Options/:RowId/MaterialView" component={MaterialView} />
               <Route path="/database/Options/:RowId/MaterialDuplicate" component={MaterialDuplicate} />
-              
+
               {/* Mold Database Routes */}
               <Route path="/database/Options/MoldNew" component={MoldNew} />
               <Route path="/database/Options/:RowId/MoldEdit" component={MoldEdit} />
               <Route path="/database/Options/:RowId/MoldView" component={MoldView} />
               <Route path="/database/Options/:RowId/MoldDuplicate" component={MoldDuplicate} />
-              
+
               {/* Machine Database Routes */}
               <Route path="/database/Options/MachineNew" component={MachineNew} />
               <Route path="/database/Options/:RowId/MachineEdit" component={MachineEdit} />
               <Route path="/database/Options/:RowId/MachineView" component={MachineView} />
               <Route path="/database/Options/:RowId/MachineDuplicate" component={MachineDuplicate} />
+
+              {/* Import Database Routes */}
+              <Route path="/database/ImportMaterial" component={ImportMaterial} />
             </App>
           </Switch>
         </BrowserRouter>
