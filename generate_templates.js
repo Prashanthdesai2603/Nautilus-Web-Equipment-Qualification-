@@ -1,0 +1,86 @@
+const XLSX = require('xlsx');
+const fs = require('fs');
+const path = require('path');
+
+const templatesDir = path.join(__dirname, 'public', 'templates');
+
+// Ensure directory exists
+if (!fs.existsSync(templatesDir)) {
+    fs.mkdirSync(templatesDir, { recursive: true });
+}
+
+const createTemplate = (filename, headers) => {
+    // Create a new workbook
+    const wb = XLSX.utils.book_new();
+
+    // Create data array. 
+    // We want headers to be at Row 13 (index 12) so data starts at Row 14 (index 13).
+    // So we need 12 empty rows before the header.
+    const data = [];
+    for (let i = 0; i < 12; i++) {
+        data.push([]);
+    }
+    data.push(headers);
+    // Add a sample row (optional) or just empty rows for user to fill
+    data.push([]);
+
+    const ws = XLSX.utils.aoa_to_sheet(data);
+
+    // Set column widths for better visibility
+    const wscols = headers.map(h => ({ wch: h.length + 5 }));
+    ws['!cols'] = wscols;
+
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    const filePath = path.join(templatesDir, filename);
+    XLSX.writeFile(wb, filePath);
+    console.log(`Created ${filePath}`);
+};
+
+// Machine Database Headers
+// Based on ImportMachine.js parsing logic
+const machineHeaders = [
+    "Machine Number",
+    "Make",
+    "Type(Platen_Orientation)",
+    "Tonnage",
+    "Screw Diameter",
+    "Max Screw Rotation Speed",
+    "Max Screw Rotation Linear Speed",
+    "Max Hydraulic Pressure",
+    "Intensification Ratio",
+    "Max Plastic Pressure",
+    "Max Shot Capacity(Wt)",
+    "Max Melt Temperature",
+    "Min Allowable Mold Stack Height",
+    "Max Allowable Mold Stack Height",
+    "Max Mold Open Daylight",
+    "Tiebar Clearance-Width",
+    "Max Mold Vertical Height",
+    "Max Mold Width",
+    "Number of Core Pulls"
+];
+
+// Mold Database Headers
+// Based on ImportMold.js parsing logic
+const moldHeaders = [
+    "Mold No",
+    "Material Name",
+    "Platen Orientation",
+    "Number of Bases",
+    "Cycle Time",
+    "Mold Stack Height",
+    "Mold Vertical Height",
+    "Mold Width",
+    "Number of Core Pulls",
+    "Hot Runner Volume",
+    "Req Mold Open Stroke"
+];
+
+try {
+    createTemplate('Machine_DB.xltx', machineHeaders);
+    createTemplate('Mold_DB.xltx', moldHeaders);
+    console.log("Templates generated successfully.");
+} catch (error) {
+    console.error("Error generating templates:", error);
+}
