@@ -10,8 +10,8 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import { Button, Input } from "reactstrap";
 import { useHistory } from "react-router-dom";
-import BreadCrumb from "../CommonSections/BreadCrumb";
 import { toast, ToastContainer } from "react-toastify";
+import BreadCrumb from "../CommonSections/BreadCrumb";
 
 // Helper to check if value is numeric or empty
 const isNumeric = (value) => {
@@ -19,7 +19,7 @@ const isNumeric = (value) => {
     return !isNaN(parseFloat(value)) && isFinite(value);
 };
 
-const ImportMaterial = () => {
+const ImportMachine = () => {
     const [gridData, setGridData] = useState([]);
     const [isImporting, setIsImporting] = useState(false);
     const [showStatusColumns, setShowStatusColumns] = useState(false);
@@ -27,16 +27,16 @@ const ImportMaterial = () => {
     const history = useHistory();
 
     const hasImportResults =
-        showStatusColumns && gridData.some((r) => r.result === "Success" || r.result === "Imported" || r.result === "Error" || r.result === "Pending");
+        showStatusColumns && gridData.some((r) => r.Resul === "Success" || r.Resul === "Imported" || r.Resul === "Error" || r.Resul === "Pending");
 
     const resultTemplate = (props) => {
-        if (props.result === "Error" || props.result === "Fail") {
+        if (props.Resul === "Error" || props.Resul === "Fail") {
             return (
                 <div className="text-center">
                     <i className="fa fa-times-circle text-danger" style={{ fontSize: "16px" }}></i>
                 </div>
             );
-        } else if (props.result === "Imported" || props.result === "Success") {
+        } else if (props.Resul === "Imported" || props.Resul === "Success") {
             return (
                 <div className="text-center">
                     <i className="fa fa-check-circle text-success" style={{ fontSize: "16px" }}></i>
@@ -47,84 +47,83 @@ const ImportMaterial = () => {
     };
 
     const columns = [
-        { headerText: "Result", template: resultTemplate, width: 70, textAlign: 'Center', field: "result", visible: showStatusColumns, allowEditing: false },
+        { headerText: "Resul", template: resultTemplate, width: 70, textAlign: 'Center', field: "Resul", visible: showStatusColumns, allowEditing: false },
         { field: "Reason", headerText: "Reason", width: 180, visible: showStatusColumns, allowEditing: false },
         { field: "id", headerText: "ID", visible: false, isPrimaryKey: true },
-        { field: "Material_Id", headerText: "Material ID", width: 140 },
-        { field: "Base_Resin", headerText: "Base Resin", width: 120 },
-        { field: "Manufacturer", headerText: "Manufacturer", width: 120 },
-        { field: "Specific_Gravity", headerText: "Specific Gravity", width: 120, textAlign: 'Right', editType: 'numericedit' },
-        { field: "Min_Melt_Temperature", headerText: "Min Melt Temp", width: 120, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Machine_Number", headerText: "Machine No", width: 120 },
+        { field: "Make", headerText: "Make", width: 100 },
+        { field: "Type_Platen_Orientation", headerText: "Type", width: 100 },
+        { field: "Tonnage", headerText: "Tonnage", width: 90, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Screw_Diameter", headerText: "Screw Dia", width: 90, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Max_Screw_Rotation_Speed", headerText: "Max Screw Speed", width: 120, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Max_Screw_Rotation_Linear_Speed", headerText: "Max Screw Linear", width: 130, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Max_Machine_Pressure", headerText: "Max Hyd Pressure", width: 120, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Intensification_Ratio", headerText: "Int Ratio", width: 90, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Max_Plastic_Pressure", headerText: "Max PL Press", width: 110, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Max_shot_Capacity_Wt", headerText: "Max Shot (Wt)", width: 120, textAlign: 'Right', editType: 'numericedit' },
         { field: "Max_Melt_Temperature", headerText: "Max Melt Temp", width: 120, textAlign: 'Right', editType: 'numericedit' },
-        { field: "Min_Mold_Temperature", headerText: "Min Mold Temp", width: 120, textAlign: 'Right', editType: 'numericedit' },
-        { field: "Max_Mold_Temperature", headerText: "Max Mold Temp", width: 120, textAlign: 'Right', editType: 'numericedit' },
-        { field: "Drying_Temperature", headerText: "Drying Temp", width: 100, textAlign: 'Right', editType: 'numericedit' },
-        { field: "Drying_Time_Min", headerText: "Drying Time Min", width: 120, textAlign: 'Right', editType: 'numericedit' },
-        { field: "Drying_Time_Max", headerText: "Drying Time Max", width: 120, textAlign: 'Right', editType: 'numericedit' },
-        { field: "Max_Residence_Time", headerText: "Max Residence Time", width: 140, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Min_allowable_Mold_Stack_Height", headerText: "Min Stack Ht", width: 120, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Max_allowable_Mold_Stack_Height", headerText: "Max Stack Ht", width: 120, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Max_Mold_Open_Daylight", headerText: "Max Daylight", width: 120, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Tiebar_Clearance_Width", headerText: "Tiebar Width", width: 110, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Max_Mold_Vertical_Height", headerText: "Max Mold V.Ht", width: 120, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Max_Mold_Width", headerText: "Max Mold Width", width: 120, textAlign: 'Right', editType: 'numericedit' },
+        { field: "Number_of_Core_Pulls", headerText: "Core Pulls", width: 100, textAlign: 'Right', editType: 'numericedit' },
     ];
 
     const validateRecord = (record, existingData = []) => {
-        let errors = [];
         let result = "Pending";
         let reason = "";
 
         // Check for duplicates
-        if (record.Material_Id && existingData.some(ed => ed.Material_Id === record.Material_Id)) {
+        if (record.Machine_Number && existingData.some(ed => ed.Machine_Number === record.Machine_Number)) {
             result = "Error";
-            reason = "Material Id Already Exists.";
+            reason = "Machine Number Already Exists.";
         }
 
-        if (!record.Material_Id || record.Material_Id.toString().trim() === "") {
-            errors.push("Material ID is mandatory.");
+        if (!record.Machine_Number || record.Machine_Number.toString().trim() === "") {
             result = "Error";
-            reason = reason ? reason + " Material ID mandatory." : "Material ID mandatory.";
+            reason = reason ? reason + " Machine Number mandatory." : "Machine Number mandatory.";
         }
 
         const numericFields = [
-            { key: "Specific_Gravity", name: "Specific Gravity" },
-            { key: "Min_Melt_Temperature", name: "Min Melt Temp" },
+            { key: "Tonnage", name: "Tonnage" },
+            { key: "Screw_Diameter", name: "Screw Diameter" },
+            { key: "Max_Screw_Rotation_Speed", name: "Max Screw Speed" },
+            { key: "Max_Screw_Rotation_Linear_Speed", name: "Max Screw Linear Speed" },
+            { key: "Max_Machine_Pressure", name: "Max Pressure" },
+            { key: "Intensification_Ratio", name: "Intensification Ratio" },
+            { key: "Max_Plastic_Pressure", name: "Max Plastic Pressure" },
+            { key: "Max_shot_Capacity_Wt", name: "Max Shot Capacity" },
             { key: "Max_Melt_Temperature", name: "Max Melt Temp" },
-            { key: "Min_Mold_Temperature", name: "Min Mold Temp" },
-            { key: "Max_Mold_Temperature", name: "Max Mold Temp" },
-            { key: "Drying_Temperature", name: "Drying Temp" },
-            { key: "Drying_Time_Min", name: "Drying Time Min" },
-            { key: "Drying_Time_Max", name: "Drying Time Max" },
-            { key: "Max_Residence_Time", name: "Max Residence Time" },
+            { key: "Min_allowable_Mold_Stack_Height", name: "Min Stack Height" },
+            { key: "Max_allowable_Mold_Stack_Height", name: "Max Stack Height" },
+            { key: "Max_Mold_Open_Daylight", name: "Max Daylight" },
+            { key: "Tiebar_Clearance_Width", name: "Tiebar Width" },
+            { key: "Max_Mold_Vertical_Height", name: "Max Mold Vertical Ht" },
+            { key: "Max_Mold_Width", name: "Max Mold Width" },
+            { key: "Number_of_Core_Pulls", name: "Core Pulls" },
         ];
 
         numericFields.forEach(field => {
             if (!isNumeric(record[field.key])) {
-                errors.push(`${field.name} must be numeric.`);
                 result = "Error";
                 reason = reason ? reason + ` ${field.name} numeric.` : `${field.name} numeric.`;
+            } else if (parseFloat(record[field.key]) < 0) {
+                result = "Error";
+                reason = reason ? reason + ` ${field.name} cannot be negative.` : `${field.name} cannot be negative.`;
             }
         });
 
         // Logical validations
-        if (isNumeric(record.Min_Melt_Temperature) && isNumeric(record.Max_Melt_Temperature)) {
-            if (parseFloat(record.Min_Melt_Temperature) > parseFloat(record.Max_Melt_Temperature) && record.Max_Melt_Temperature !== "") {
-                errors.push("Min Melt Temp must be <= Max Melt Temp.");
+        if (isNumeric(record.Min_allowable_Mold_Stack_Height) && isNumeric(record.Max_allowable_Mold_Stack_Height)) {
+            if (parseFloat(record.Min_allowable_Mold_Stack_Height) > parseFloat(record.Max_allowable_Mold_Stack_Height) && record.Max_allowable_Mold_Stack_Height !== "") {
                 result = "Error";
-                reason = reason ? reason + " Min<=Max Melt." : "Min<=Max Melt.";
-            }
-        }
-        if (isNumeric(record.Min_Mold_Temperature) && isNumeric(record.Max_Mold_Temperature)) {
-            if (parseFloat(record.Min_Mold_Temperature) > parseFloat(record.Max_Mold_Temperature) && record.Max_Mold_Temperature !== "") {
-                errors.push("Min Mold Temp must be <= Max Mold Temp.");
-                result = "Error";
-                reason = reason ? reason + " Min<=Max Mold." : "Min<=Max Mold.";
-            }
-        }
-        if (isNumeric(record.Drying_Time_Min) && isNumeric(record.Drying_Time_Max)) {
-            if (parseFloat(record.Drying_Time_Min) > parseFloat(record.Drying_Time_Max) && record.Drying_Time_Max !== "") {
-                errors.push("Drying Time Min must be <= Drying Time Max.");
-                result = "Error";
-                reason = reason ? reason + " Min<=Max Drying." : "Min<=Max Drying.";
+                reason = reason ? reason + " Min<=Max Stack Ht." : "Min<=Max Stack Ht.";
             }
         }
 
-        return { result: result, reason: reason };
+        return { resul: result, reason: reason };
     };
 
     const handleFileUpload = (e) => {
@@ -140,29 +139,37 @@ const ImportMaterial = () => {
 
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range: 13 });
 
-            // Just map raw data, no validation yet
+            // Raw data mapping
             const parsedData = jsonData.map((row, index) => {
+                if (row.length === 0) return null;
                 return {
                     id: index + 1,
-                    Material_Id: row[0],
-                    Base_Resin: row[1] || "",
-                    Manufacturer: row[2] || "",
-                    Specific_Gravity: row[3] || "",
-                    Min_Melt_Temperature: row[4] || "",
-                    Max_Melt_Temperature: row[5] || "",
-                    Min_Mold_Temperature: row[6] || "",
-                    Max_Mold_Temperature: row[7] || "",
-                    Drying_Temperature: row[8] || "",
-                    Drying_Time_Min: row[9] || "",
-                    Drying_Time_Max: row[10] || "",
-                    Max_Residence_Time: row[11] || "",
-                    result: "", // Initial empty result
+                    Machine_Number: row[0],
+                    Make: row[1] || "",
+                    Type_Platen_Orientation: row[2] || "",
+                    Tonnage: row[3] || "",
+                    Screw_Diameter: row[4] || "",
+                    Max_Screw_Rotation_Speed: row[5] || "",
+                    Max_Screw_Rotation_Linear_Speed: row[6] || "",
+                    Max_Machine_Pressure: row[7] || "",
+                    Intensification_Ratio: row[8] || "",
+                    Max_Plastic_Pressure: row[9] || "",
+                    Max_shot_Capacity_Wt: row[10] || "",
+                    Max_Melt_Temperature: row[11] || "",
+                    Min_allowable_Mold_Stack_Height: row[12] || "",
+                    Max_allowable_Mold_Stack_Height: row[13] || "",
+                    Max_Mold_Open_Daylight: row[14] || "",
+                    Tiebar_Clearance_Width: row[15] || "",
+                    Max_Mold_Vertical_Height: row[16] || "",
+                    Max_Mold_Width: row[17] || "",
+                    Number_of_Core_Pulls: row[18] || "",
+                    Resul: "",
                     Reason: ""
                 };
-            });
+            }).filter(row => row !== null);
 
             setGridData(parsedData);
-            setShowStatusColumns(false); // Ensure hidden on new load
+            setShowStatusColumns(false);
             toast.success("File loaded. Review data and click Import.");
         };
         reader.readAsArrayBuffer(file);
@@ -170,7 +177,7 @@ const ImportMaterial = () => {
 
     const downloadTemplate = () => {
         const baseUrl = window.location.origin;
-        const templateUrl = baseUrl + process.env.PUBLIC_URL + "/templates/Material_DB.xltx";
+        const templateUrl = baseUrl + process.env.PUBLIC_URL + "/templates/Machine_DB.xlsx";
         const officeUri = `ms-excel:ofv|u|${templateUrl}`;
         window.location.href = officeUri;
     };
@@ -182,57 +189,59 @@ const ImportMaterial = () => {
         }
 
         setIsImporting(true);
-        setShowStatusColumns(true); // Show columns now
+        setShowStatusColumns(true);
 
-        // We need to validate ALL rows that are not already imported
-        const existingData = JSON.parse(sessionStorage.getItem("MaterialData")) || [];
+        const existingData = JSON.parse(sessionStorage.getItem("MachineData")) || [];
         let nextId = existingData.length > 0 ? Math.max(...existingData.map(d => d.id)) + 1 : 1;
         let successCount = 0;
         let errorCount = 0;
 
         const updatedGridData = gridData.map(row => {
-            // content
-            // If already success, skip
-            if (row.result === "Success" || row.result === "Imported") {
+            if (row.Resul === "Success" || row.Resul === "Imported") {
                 return row;
             }
 
-            // Perform validation now
             const validation = validateRecord(row, existingData);
 
-            if (validation.result === "Error") {
+            if (validation.resul === "Error") {
                 errorCount++;
-                return { ...row, result: "Error", Reason: validation.reason };
+                return { ...row, Resul: "Error", Reason: validation.reason };
             }
 
-            // It is valid, add to DB
             const newRecord = {
                 ...row,
                 id: nextId++,
-                Specific_Gravity: row.Specific_Gravity ? parseFloat(row.Specific_Gravity) : 0,
-                Min_Melt_Temperature: row.Min_Melt_Temperature ? parseFloat(row.Min_Melt_Temperature) : 0,
+                Tonnage: row.Tonnage ? parseFloat(row.Tonnage) : 0,
+                Screw_Diameter: row.Screw_Diameter ? parseFloat(row.Screw_Diameter) : 0,
+                Max_Screw_Rotation_Speed: row.Max_Screw_Rotation_Speed ? parseFloat(row.Max_Screw_Rotation_Speed) : 0,
+                Max_Screw_Rotation_Linear_Speed: row.Max_Screw_Rotation_Linear_Speed ? parseFloat(row.Max_Screw_Rotation_Linear_Speed) : 0,
+                Max_Machine_Pressure: row.Max_Machine_Pressure ? parseFloat(row.Max_Machine_Pressure) : 0,
+                Intensification_Ratio: row.Intensification_Ratio ? parseFloat(row.Intensification_Ratio) : 0,
+                Max_Plastic_Pressure: row.Max_Plastic_Pressure ? parseFloat(row.Max_Plastic_Pressure) : 0,
+                // These keys need special handling for the DB format as seen before or just consistent usage
+                // The previous code had mapping to "Type(Platen_Orientation)" etc. Let's maintain that structure for the DB
+                "Type(Platen_Orientation)": row.Type_Platen_Orientation,
+                "Max_shot_Capacity(Wt)": row.Max_shot_Capacity_Wt ? parseFloat(row.Max_shot_Capacity_Wt) : 0,
                 Max_Melt_Temperature: row.Max_Melt_Temperature ? parseFloat(row.Max_Melt_Temperature) : 0,
-                Min_Mold_Temperature: row.Min_Mold_Temperature ? parseFloat(row.Min_Mold_Temperature) : 0,
-                Max_Mold_Temperature: row.Max_Mold_Temperature ? parseFloat(row.Max_Mold_Temperature) : 0,
-                Drying_Temperature: row.Drying_Temperature ? parseFloat(row.Drying_Temperature) : 0,
-                Drying_Time_Min: row.Drying_Time_Min ? parseFloat(row.Drying_Time_Min) : 0,
-                Drying_Time_Max: row.Drying_Time_Max ? parseFloat(row.Drying_Time_Max) : 0,
-                Max_Residence_Time: row.Max_Residence_Time ? parseFloat(row.Max_Residence_Time) : 0,
-                Avg_Melt_Temperature: (parseFloat(row.Min_Melt_Temperature || 0) + parseFloat(row.Max_Melt_Temperature || 0)) / 2,
-                Avg_Mold_Temperature: (parseFloat(row.Min_Mold_Temperature || 0) + parseFloat(row.Max_Mold_Temperature || 0)) / 2
+                Min_allowable_Mold_Stack_Height: row.Min_allowable_Mold_Stack_Height ? parseFloat(row.Min_allowable_Mold_Stack_Height) : 0,
+                Max_allowable_Mold_Stack_Height: row.Max_allowable_Mold_Stack_Height ? parseFloat(row.Max_allowable_Mold_Stack_Height) : 0,
+                Max_Mold_Open_Daylight: row.Max_Mold_Open_Daylight ? parseFloat(row.Max_Mold_Open_Daylight) : 0,
+                "Tiebar_Clearance-Width": row.Tiebar_Clearance_Width ? parseFloat(row.Tiebar_Clearance_Width) : 0,
+                Max_Mold_Vertical_Height: row.Max_Mold_Vertical_Height ? parseFloat(row.Max_Mold_Vertical_Height) : 0,
+                Max_Mold_Width: row.Max_Mold_Width ? parseFloat(row.Max_Mold_Width) : 0,
+                Number_of_Core_Pulls: row.Number_of_Core_Pulls ? parseFloat(row.Number_of_Core_Pulls) : 0
             };
 
-            // Clean up UI-only fields before saving if desired, strictly speaking sessionStorage dumps everything so it's fine.
-            // But let's remove result/Reason from the saved record to keep DB clean if we want, 
-            // though existing code kept them sometimes. Let's keep it simple and safe.
-            // existingData push
+            // Clean up UI keys from the DB object if needed, but important are the added ones. 
+            // In the previous code, keys resulted from mapping back and forth. 
+            // We'll keep them consistent as they were added in previous code block.
+
             existingData.push(newRecord);
             successCount++;
-
-            return { ...row, result: "Success", Reason: "Data Imported." };
+            return { ...row, Resul: "Success", Reason: "Data Imported." };
         });
 
-        sessionStorage.setItem("MaterialData", JSON.stringify(existingData));
+        sessionStorage.setItem("MachineData", JSON.stringify(existingData));
         setGridData(updatedGridData);
         setIsImporting(false);
 
@@ -246,9 +255,7 @@ const ImportMaterial = () => {
     const handleRemoveImportedRows = () => {
         if (!gridData || gridData.length === 0) return;
 
-        // Remove only successfully imported rows from the TEMP grid data.
-        // Keep Error/Pending (and any non-success statuses) so user can edit + re-import.
-        const keptRows = gridData.filter((row) => row.result !== "Success" && row.result !== "Imported");
+        const keptRows = gridData.filter((row) => row.Resul !== "Success" && row.Resul !== "Imported");
         const removedCount = gridData.length - keptRows.length;
 
         setGridData(keptRows);
@@ -277,7 +284,7 @@ const ImportMaterial = () => {
     const handleActionBegin = (args) => {
         if (args.requestType === 'beginEdit' || args.requestType === 'delete') {
             const row = args.rowData || args.data[0];
-            if (row && (row.result === 'Success' || row.result === 'Imported')) {
+            if (row && (row.Resul === 'Success' || row.Resul === 'Imported')) {
                 args.cancel = true;
                 toast.info("Imported rows cannot be edited or deleted.");
             }
@@ -326,7 +333,7 @@ const ImportMaterial = () => {
             `}</style>
 
             <div className="d-flex justify-content-between ml-3 pt-3 pb-3">
-                <BreadCrumb DB_Name={"Material"} Current_Page={"Import"} />
+                <BreadCrumb DB_Name={"Machine"} Current_Page={"Import"} />
             </div>
 
             <div className="card p-3 ml-2" style={{ background: "#e4eae1" }}>
@@ -456,4 +463,4 @@ const ImportMaterial = () => {
     );
 };
 
-export default ImportMaterial;
+export default ImportMachine;

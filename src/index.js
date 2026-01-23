@@ -28,6 +28,8 @@ import MachineEdit from "./components/database/MachineDatabase/MachineEdit";
 import MachineView from "./components/database/MachineDatabase/MachineView";
 import MachineDuplicate from "./components/database/MachineDatabase/MachineDuplicate";
 import ImportMaterial from "./components/database/ImportMaterial/ImportMaterial";
+import ImportMachine from "./components/database/ImportMachine/ImportMachine";
+import ImportMold from "./components/database/ImportMold/ImportMold";
 
 // Import Stimulsoft for license registration
 import { Stimulsoft } from "stimulsoft-reports-js/Scripts/stimulsoft.reports";
@@ -87,6 +89,8 @@ const Root = () => {
 
               {/* Import Database Routes */}
               <Route path="/database/ImportMaterial" component={ImportMaterial} />
+              <Route path="/database/ImportMachine" component={ImportMachine} />
+              <Route path="/database/ImportMold" component={ImportMold} />
             </App>
           </Switch>
         </BrowserRouter>
